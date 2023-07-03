@@ -43,6 +43,33 @@ public class Island {
         // но без future вообще зависает. Мб есть deadLock?
         // надо продумать работу программы тщательнее
         ExecutorService service = Executors.newFixedThreadPool(3);
+        List<Callable<Void>> tasks = new ArrayList<>();
+//        int length = list.size();
+//        for (int i = 0; i < length; i++) {
+//            final int currentIndex = i;
+//            tasks.add(() -> {
+//                Location currentLocation = new Location();
+//                currentLocation.setDesert(currentIndex == length - 1 || currentIndex == length - 2);
+//                currentLocation.startAnimalAmountCreator();
+//                list.set(currentIndex, currentLocation);
+//
+//                return null;
+//            });
+//        }
+//        try {
+//            List<Future<Void>> futures = new ArrayList<>();
+//            for (Callable<Void> task : tasks) {
+//                futures.add(service.submit(task));
+//            }
+//            for (Future<Void> future : futures) {
+//                future.get();
+//            }
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        } catch (ExecutionException e) {
+//            throw new RuntimeException(e);
+//        }
+//        service.shutdown();
         Runnable runnable = new Runnable() {
             @Override
             public void run() {

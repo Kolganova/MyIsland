@@ -33,4 +33,10 @@ public abstract class IslandOccupant {
         return location;
     }
 
+    public void die(Island.Location location) {
+        setCurrentAmountOfEntitiesOnLocation(currentAmountOfEntitiesOnLocation.getAndDecrement());
+        location.getListOfOccupants().remove(this);
+    }
+    // он же одинаковый для всех? да и название норм
+
 }

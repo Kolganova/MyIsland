@@ -6,9 +6,11 @@ import island.Island.Location;
 
 public class Fox extends Predator {
     private int id;
+    Location location;
 
     public Fox(Location location) {
         super(location);
+        this.location = location;
     }
 
     @Override
@@ -22,7 +24,7 @@ public class Fox extends Predator {
         else if (age < 100)
             setAgingPhase(AnimalAging.OLD);
         else
-            this.die();
+            this.die(location);
     }
 
 }

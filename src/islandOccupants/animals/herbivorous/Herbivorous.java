@@ -10,11 +10,6 @@ public abstract class Herbivorous extends Animal {
     }
 
     @Override
-    public void die() {
-
-    }
-
-    @Override
     public void eat() {
 
     }

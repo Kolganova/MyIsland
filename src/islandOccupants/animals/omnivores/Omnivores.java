@@ -1,18 +1,12 @@
 package islandOccupants.animals.omnivores;
 
 import island.Island;
-import islandOccupants.IslandOccupant;
 import islandOccupants.animals.Animal;
 
 public abstract class Omnivores extends Animal {
 
     public Omnivores(Island.Location location) {
         super(location);
-    }
-
-    @Override
-    public void die() {
-
     }
 
     @Override

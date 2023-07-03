@@ -1,17 +1,11 @@
 package islandOccupants.animals.preadators;
 
 import island.Island;
-import islandOccupants.IslandOccupant;
 import islandOccupants.animals.Animal;
 
 public abstract class Predator extends Animal {
     public Predator(Island.Location location) {
         super(location);
-    }
-
-    @Override
-    public synchronized void die() {
-        System.out.println("islandOccupants.animals.Animal died :(");
     }
 
     @Override

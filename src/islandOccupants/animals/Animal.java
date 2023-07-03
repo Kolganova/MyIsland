@@ -15,8 +15,6 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable,
         super(location);
     }
 
-    public abstract void die();
-
     public void setAgingPhase(AnimalAging agingPhase) {
         this.agingPhase = agingPhase;
     }
