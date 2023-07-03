@@ -2,11 +2,11 @@ package islandOccupants.plants;
 
 import island.Island;
 import islandOccupants.IslandOccupant;
+import islandOccupants.OccupantFactory;
 
 public abstract class Plant extends IslandOccupant {
-    private static double nutritionalValue;
-    private static int propagationFrequency;
-    private boolean isAbleToGrowOnThisLocation;
+    private double nutritionalValue;
+    private int propagationFrequency;
 
     public Plant(Island.Location location) {
         super(location);
@@ -16,7 +16,17 @@ public abstract class Plant extends IslandOccupant {
     public void checkPhase(int age) {
         // переделать для каждого наследника
     }
-    public synchronized void propagation(Island.Location location, int propagationFrequency) {
+
+    public synchronized void propagation(int propagationFrequency, String type) {
+        if (getCurrentAmountOfOccupantsOnLocation().get() < getMaxAmountOfOccupantsOnLocation()) {
+            for (int i = 0; i < propagationFrequency; i++) {
+                IslandOccupant currentOccupant = OccupantFactory.createOccupant(type);
+                this.getLocation().addOccupantInLocation(currentOccupant);
+                getCurrentAmountOfOccupantsOnLocation().getAndIncrement();
+            }
+        }
+    }
+
         /* откуда его будут вызывать? аргументы тоже под вопросом
         должен вызываться в пуле потоков? для того что бы быстро обрабатывать все
         растения на локации
@@ -27,7 +37,6 @@ public abstract class Plant extends IslandOccupant {
          распространение растения на этой локации если может расти на этой локации +
          если на локации есть место
          */
-    }
 
     public synchronized void vanish() {
         this.getLocation().getListOfOccupants().remove(this);

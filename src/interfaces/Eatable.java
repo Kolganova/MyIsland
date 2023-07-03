@@ -1,5 +1,7 @@
 package interfaces;
 
+import islandOccupants.IslandOccupant;
+
 public interface Eatable {
-    public void eat();
+    void eat(IslandOccupant occupant);
 }

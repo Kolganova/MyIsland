@@ -6,8 +6,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class IslandOccupant {
     Island.Location location;
-    private static int maxAmountOfEntitiesOnLocation;
-    private static AtomicInteger currentAmountOfEntitiesOnLocation;
+    private static int maxAmountOfOccupantsOnLocation;
+    private static AtomicInteger currentAmountOfOccupantsOnLocation;
     private int age;
     private int id;
     private AtomicInteger weight;
@@ -20,13 +20,20 @@ public abstract class IslandOccupant {
     public abstract void checkPhase(int age);
 
 
-    public static AtomicInteger getCurrentAmountOfEntitiesOnLocation() {
-        return currentAmountOfEntitiesOnLocation;
+    public AtomicInteger getCurrentAmountOfOccupantsOnLocation() {
+        return currentAmountOfOccupantsOnLocation;
     }
 
-    public static void setCurrentAmountOfEntitiesOnLocation(int currentAmountOfEntitiesOnLocation) {
-        IslandOccupant.currentAmountOfEntitiesOnLocation.getAndSet(currentAmountOfEntitiesOnLocation);
-        // вроде тут логика правильная...
+    public void setCurrentAmountOfOccupantsOnLocation(int currentAmountOfEntitiesOnLocation) {
+        IslandOccupant.currentAmountOfOccupantsOnLocation.getAndSet(currentAmountOfEntitiesOnLocation);
+    }
+
+    public static int getMaxAmountOfOccupantsOnLocation() {
+        return maxAmountOfOccupantsOnLocation;
+    }
+
+    public static void setMaxAmountOfOccupantsOnLocation(int maxAmountOfEntitiesOnLocation) {
+        IslandOccupant.maxAmountOfOccupantsOnLocation = maxAmountOfEntitiesOnLocation;
     }
 
     public Island.Location getLocation() {
@@ -34,9 +41,8 @@ public abstract class IslandOccupant {
     }
 
     public void die(Island.Location location) {
-        setCurrentAmountOfEntitiesOnLocation(currentAmountOfEntitiesOnLocation.getAndDecrement());
+        setCurrentAmountOfOccupantsOnLocation(currentAmountOfOccupantsOnLocation.getAndDecrement());
         location.getListOfOccupants().remove(this);
     }
-    // он же одинаковый для всех? да и название норм
 
 }

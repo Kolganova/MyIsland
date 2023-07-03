@@ -10,11 +10,7 @@ public class OccupantFactory {
 
     private static Island.Location location;
 
-    public OccupantFactory(Island.Location location) {
-        OccupantFactory.location = location;
-    }
-
-    public IslandOccupant createOccupant(String type) {
+    public static IslandOccupant createOccupant(String type) {
         switch (type) {
             case "wolf" -> {
                 return new Wolf(location);
@@ -56,7 +52,7 @@ public class OccupantFactory {
                 return new Buffalo(location);
             }
             case "duck" -> {
-                return new Duck(location);
+                new Duck(location);
             }
             case "caterpillar" -> {
                 return new Caterpillar(location);
@@ -73,9 +69,15 @@ public class OccupantFactory {
             case "grass" -> {
                 return new Grass(location);
             }
-            default -> {
-                return null;
-            }
         }
+        return null;
+    }
+
+    public static Island.Location getLocation() {
+        return location;
+    }
+
+    public static void setLocation(Island.Location location) {
+        OccupantFactory.location = location;
     }
 }
