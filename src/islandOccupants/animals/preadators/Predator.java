@@ -1,6 +1,6 @@
 package islandOccupants.animals.preadators;
 
-import island.Island;
+import island.Location;
 import islandOccupants.IslandOccupant;
 import islandOccupants.animals.Animal;
 import islandOccupants.animals.herbivorous.Herbivorous;
@@ -9,7 +9,7 @@ import islandOccupants.deadAnimals.DeadAnimal;
 import islandOccupants.plants.Plant;
 
 public abstract class Predator extends Animal {
-    public Predator(Island.Location location) {
+    public Predator(Location location) {
         super(location);
     }
 
@@ -26,7 +26,6 @@ public abstract class Predator extends Animal {
 
             }
         }
-
         // и в конце каждого варианта сделать что он поел
         // мб переименовать boolean. смысл в том что бы он хотя бы попробовал поесть
         // т.е. если хищнику попадется растение, то ему нужно попробовать еще раз
@@ -34,16 +33,12 @@ public abstract class Predator extends Animal {
 
     @Override
     public synchronized void move() {
-
+        // все двигаются по-одинаковому?
     }
 
     @Override
-    public synchronized void multiply() {
+    public synchronized void multiply(String type) {
 
     }
 
-    @Override
-    public void isReadyToMultiply() {
-
-    }
 }

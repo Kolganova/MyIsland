@@ -1,16 +1,10 @@
 package islandOccupants.animals.preadators;
 
-import island.Island;
-import islandOccupants.IslandOccupant;
-import islandOccupants.animals.preadators.Predator;
+import island.Location;
 
 public class Wolf extends Predator {
-    public Wolf(Island.Location location) {
+    public Wolf(Location location) {
         super(location);
     }
 
-    @Override
-    public void checkPhase(int age) {
-
-    }
 }

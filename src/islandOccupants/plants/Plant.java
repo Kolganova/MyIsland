@@ -1,23 +1,31 @@
 package islandOccupants.plants;
 
-import island.Island;
+import enums.PlantAging;
+import interfaces.Multipliable;
+import island.Location;
 import islandOccupants.IslandOccupant;
 import islandOccupants.OccupantFactory;
 
-public abstract class Plant extends IslandOccupant {
-    private double nutritionalValue;
-    private int propagationFrequency;
+public abstract class Plant extends IslandOccupant implements Multipliable {
+    private static double nutritionalValue;
+    private static int propagationFrequency;
 
-    public Plant(Island.Location location) {
+    public Plant(Location location) {
         super(location);
     }
 
     @Override
-    public void checkPhase(int age) {
-        // переделать для каждого наследника
+    public PlantAging checkAgingPhase(int age) {
+        for (PlantAging temp:PlantAging.values()) {
+            if (age >= temp.getMin() && age <= temp.getMax())
+                return temp;
+        }
+
+        return null;
     }
 
-    public synchronized void propagation(int propagationFrequency, String type) {
+    @Override
+    public synchronized void multiply(String type) {
         if (getCurrentAmountOfOccupantsOnLocation().get() < getMaxAmountOfOccupantsOnLocation()) {
             for (int i = 0; i < propagationFrequency; i++) {
                 IslandOccupant currentOccupant = OccupantFactory.createOccupant(type);
@@ -26,6 +34,7 @@ public abstract class Plant extends IslandOccupant {
             }
         }
     }
+    // сделать многопоточным?
 
         /* откуда его будут вызывать? аргументы тоже под вопросом
         должен вызываться в пуле потоков? для того что бы быстро обрабатывать все
@@ -42,5 +51,27 @@ public abstract class Plant extends IslandOccupant {
         this.getLocation().getListOfOccupants().remove(this);
         //setCurrentAmountOfEntitiesOnLocation(getCurrentAmountOfEntitiesOnLocation().getAndDecrement());
         // пока в комменте т.к. текущее значение пока что null
+    }
+
+    @Override
+    public boolean isReadyToMultiply() {
+
+        return checkAgingPhase(getAge()) == PlantAging.GROWN;
+    }
+
+    public static double getNutritionalValue() {
+        return nutritionalValue;
+    }
+
+    public static void setNutritionalValue(double nutritionalValue) {
+        Plant.nutritionalValue = nutritionalValue;
+    }
+
+    public static int getPropagationFrequency() {
+        return propagationFrequency;
+    }
+
+    public static void setPropagationFrequency(int propagationFrequency) {
+        Plant.propagationFrequency = propagationFrequency;
     }
 }

@@ -1,11 +1,9 @@
 package islandOccupants.plants;
 
-import island.Island;
-import islandOccupants.IslandOccupant;
-import islandOccupants.plants.Plant;
+import island.Location;
 
 public class PoisonFlower extends Plant {
-    public PoisonFlower(Island.Location location) {
+    public PoisonFlower(Location location) {
         super(location);
     }
 }

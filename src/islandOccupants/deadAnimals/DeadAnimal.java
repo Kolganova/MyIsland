@@ -1,15 +1,21 @@
 package islandOccupants.deadAnimals;
 
-import island.Island;
+import enums.DeadAnimalAging;
+import island.Location;
 import islandOccupants.IslandOccupant;
 
 public class DeadAnimal extends IslandOccupant {
-    public DeadAnimal(Island.Location location) {
+    public DeadAnimal(Location location) {
         super(location);
     }
 
     @Override
-    public void checkPhase(int age) {
+    public DeadAnimalAging checkAgingPhase(int age) {
+        for (DeadAnimalAging temp:DeadAnimalAging.values()) {
+            if (age >= temp.getMin() && age <= temp.getMax())
+                return temp;
+        }
 
+        return null;
     }
 }

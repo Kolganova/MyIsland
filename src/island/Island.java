@@ -1,14 +1,9 @@
 package island;
 
-import constants.Constant;
-import islandOccupants.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import static islandOccupants.OccupantFactory.createOccupant;
 
 public class Island {
     private final int width;
@@ -64,39 +59,6 @@ public class Island {
 
     public CopyOnWriteArrayList<CopyOnWriteArrayList<Location>> getListOfLocations() {
         return listOfLocations;
-    }
-
-    public static class Location {
-        private static final AtomicInteger counter = new AtomicInteger();
-        private final CopyOnWriteArrayList<IslandOccupant> listOfOccupants;
-
-        public Location() {
-            listOfOccupants = new CopyOnWriteArrayList<>();
-        }
-
-        public CopyOnWriteArrayList<IslandOccupant> getListOfOccupants() {
-            return listOfOccupants;
-        }
-
-        public void addOccupantInLocation(IslandOccupant occupant) {
-            listOfOccupants.add(occupant);
-        }
-
-        public synchronized void startAnimalAmountCreator() { // название мб поменять
-            OccupantFactory.setLocation(this);
-            Constant.getListOfOccupantTypes().forEach((key, value) -> {
-                int max = Constant.getListOfOccupantTypes().get(key); // AtomicInteger нужно сделать, скорее всего
-                for (AtomicInteger i = new AtomicInteger(); i.get() < max; i.getAndIncrement()) {
-                    createOccupant(key);
-                    counter.getAndIncrement();
-                    System.out.println(key + " from add occupant method");
-                }
-            });
-        }
-
-        public static AtomicInteger getCounter() {
-            return counter;
-        }
     }
 
 }

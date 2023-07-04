@@ -1,11 +1,9 @@
 package islandOccupants.plants;
 
-import island.Island;
-import islandOccupants.IslandOccupant;
-import islandOccupants.plants.Plant;
+import island.Location;
 
 public class Flower extends Plant {
-    public Flower(Island.Location location) {
+    public Flower(Location location) {
         super(location);
     }
 }

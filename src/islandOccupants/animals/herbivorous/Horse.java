@@ -1,11 +1,10 @@
 package islandOccupants.animals.herbivorous;
 
-import island.Island;
-import islandOccupants.IslandOccupant;
+import island.Location;
 
 public class Horse extends Herbivorous {
 
-    public Horse(Island.Location location) {
+    public Horse(Location location) {
         super(location);
     }
 

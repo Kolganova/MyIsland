@@ -1,6 +1,6 @@
 package islandOccupants;
 
-import island.Island;
+import island.Location;
 import islandOccupants.animals.herbivorous.*;
 import islandOccupants.animals.omnivores.Caterpillar;
 import islandOccupants.animals.preadators.*;
@@ -8,7 +8,7 @@ import islandOccupants.plants.*;
 
 public class OccupantFactory {
 
-    private static Island.Location location;
+    private static Location location;
 
     public static IslandOccupant createOccupant(String type) {
         switch (type) {
@@ -52,7 +52,7 @@ public class OccupantFactory {
                 return new Buffalo(location);
             }
             case "duck" -> {
-                new Duck(location);
+                return new Duck(location);
             }
             case "caterpillar" -> {
                 return new Caterpillar(location);
@@ -73,11 +73,11 @@ public class OccupantFactory {
         return null;
     }
 
-    public static Island.Location getLocation() {
+    public static Location getLocation() {
         return location;
     }
 
-    public static void setLocation(Island.Location location) {
+    public static void setLocation(Location location) {
         OccupantFactory.location = location;
     }
 }

@@ -1,10 +1,10 @@
 package islandOccupants.animals.herbivorous;
 
-import island.Island;
+import island.Location;
 
 public class Duck extends Herbivorous {
 
-    public Duck(Island.Location location) {
+    public Duck(Location location) {
         super(location);
     }
 }
