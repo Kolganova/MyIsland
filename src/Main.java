@@ -10,7 +10,7 @@ public class Main {
         System.out.println(location.getListOfOccupants());
         System.out.println();
         System.out.println(getCounter());
-        System.out.println(location.getListWithNumberOfOccupantsOnLocation());
+        System.out.println(location.getMapWithOccupantsOnLocation());
 //        System.out.println(myIsland.getListOfLocations().get(0).get(0).getListOfOccupants());
 
     }

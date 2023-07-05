@@ -9,8 +9,9 @@ import islandOccupants.deadAnimals.DeadAnimal;
 import islandOccupants.plants.Plant;
 
 public abstract class Predator extends Animal {
-    public Predator(Location location) {
-        super(location);
+
+    public Predator(Location location, String type) {
+        super(location, type);
     }
 
     @Override
@@ -34,11 +35,6 @@ public abstract class Predator extends Animal {
     @Override
     public synchronized void move() {
         // все двигаются по-одинаковому?
-    }
-
-    @Override
-    public synchronized void multiply(String type) {
-
     }
 
 }

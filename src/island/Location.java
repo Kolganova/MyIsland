@@ -16,11 +16,34 @@ import static islandOccupants.OccupantFactory.createOccupant;
 public class Location {
     private static final AtomicInteger counter = new AtomicInteger();
     private final CopyOnWriteArrayList<IslandOccupant> listOfOccupants;
-    private final ConcurrentHashMap<String, AtomicInteger> listWithNumberOfOccupantsOnLocation = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, AtomicInteger> mapWithOccupantsOnLocation = new ConcurrentHashMap<>();
+    List<String> listOfOccupantsType = new ArrayList<>(List.of("wolf", "boa", "fox", "bear", "eagle", "horse",
+            "deer", "rabbit", "mouse", "goat", "sheep", "boar", "buffalo", "duck", "caterpillar", "flower",
+            "poisonFlower", "bush", "grass"));
+    List<AtomicInteger> initialAmountOfOccupants = new ArrayList<>(List.of(
+            new AtomicInteger(15),
+            new AtomicInteger(15),
+            new AtomicInteger(15),
+            new AtomicInteger(2),
+            new AtomicInteger(10),
+            new AtomicInteger(10),
+            new AtomicInteger(10),
+            new AtomicInteger(75),
+            new AtomicInteger(250),
+            new AtomicInteger(70),
+            new AtomicInteger(70),
+            new AtomicInteger(25),
+            new AtomicInteger(5),
+            new AtomicInteger(100),
+            new AtomicInteger(500),
+            new AtomicInteger(100),
+            new AtomicInteger(50),
+            new AtomicInteger(50),
+            new AtomicInteger(200)));
 
     public Location() {
         listOfOccupants = new CopyOnWriteArrayList<>();
-        setInitialListWithNumberOfOccupantsOnLocation();
+        setInitialMapWithOccupantsOnLocation();
     }
 
     public CopyOnWriteArrayList<IslandOccupant> getListOfOccupants() {
@@ -33,8 +56,8 @@ public class Location {
 
     public synchronized void startAnimalAmountCreator() { // название мб поменять
         OccupantFactory.setLocation(this);
-        this.getListWithNumberOfOccupantsOnLocation().forEach((key, value) -> {
-            AtomicInteger max = this.getListWithNumberOfOccupantsOnLocation().get(key); // AtomicInteger нужно сделать, скорее всего
+        this.getMapWithOccupantsOnLocation().forEach((key, value) -> {
+            AtomicInteger max = this.getMapWithOccupantsOnLocation().get(key); // AtomicInteger нужно сделать, скорее всего
             for (AtomicInteger i = new AtomicInteger(); i.get() < max.get(); i.getAndIncrement()) {
                 createOccupant(key);
                 counter.getAndIncrement();
@@ -47,37 +70,23 @@ public class Location {
         return counter;
     }
 
-    public ConcurrentHashMap<String, AtomicInteger> getListWithNumberOfOccupantsOnLocation() {
-        return listWithNumberOfOccupantsOnLocation;
+    public ConcurrentHashMap<String, AtomicInteger> getMapWithOccupantsOnLocation() {
+        return mapWithOccupantsOnLocation;
     }
 
-    private void setInitialListWithNumberOfOccupantsOnLocation() {
-        List<String> keys = new ArrayList<>(List.of("wolf", "boa", "fox", "bear", "eagle", "horse",
-                "deer", "rabbit", "mouse", "goat", "sheep", "boar", "buffalo", "duck", "caterpillar", "flower",
-                "poisonFlower", "bush", "grass"));
-        List<AtomicInteger> values = new ArrayList<>(List.of(
-                new AtomicInteger(15),
-                new AtomicInteger(15),
-                new AtomicInteger(15),
-                new AtomicInteger(2),
-                new AtomicInteger(10),
-                new AtomicInteger(10),
-                new AtomicInteger(10),
-                new AtomicInteger(75),
-                new AtomicInteger(250),
-                new AtomicInteger(70),
-                new AtomicInteger(70),
-                new AtomicInteger(25),
-                new AtomicInteger(5),
-                new AtomicInteger(100),
-                new AtomicInteger(500),
-                new AtomicInteger(100),
-                new AtomicInteger(50),
-                new AtomicInteger(50),
-                new AtomicInteger(200)));
+    private void setInitialMapWithOccupantsOnLocation() {
 
-        HashMap<String, AtomicInteger> map = keys.stream().collect(HashMap::new, (k, v) -> k.put(v, values.get(keys.indexOf(v))),
+        HashMap<String, AtomicInteger> map = listOfOccupantsType.stream().collect(HashMap::new, (k, v) -> k.put(v, initialAmountOfOccupants.get(listOfOccupantsType.indexOf(v))),
                 Map::putAll);
-        listWithNumberOfOccupantsOnLocation.putAll(map);
+        mapWithOccupantsOnLocation.putAll(map);
     }
+
+    public synchronized void incrementAmountOfOccupantsOnLocation(String type) {
+        mapWithOccupantsOnLocation.get(type).getAndIncrement();
+    }
+
+    public synchronized void decrementAmountOfOccupantsOnLocation(String type) {
+        mapWithOccupantsOnLocation.get(type).getAndDecrement();
+    }
+
 }

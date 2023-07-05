@@ -4,7 +4,7 @@ import island.Location;
 
 public class Goat extends Herbivorous {
 
-    public Goat(Location location) {
-        super(location);
+    public Goat(Location location, String type) {
+        super(location, type);
     }
 }

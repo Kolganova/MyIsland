@@ -5,13 +5,12 @@ import islandOccupants.animals.Animal;
 
 public abstract class Omnivores extends Animal {
 
-    public Omnivores(Location location) {
-        super(location);
+    public Omnivores(Location location, String type) {
+        super(location, type);
     }
 
     @Override
-    public void multiply(String type) {
-    // каждому типу нужен свой или нет?
-    }
+    public void move() {
 
+    }
 }

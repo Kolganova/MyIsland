@@ -4,7 +4,8 @@ import island.Location;
 
 public class Buffalo extends Herbivorous {
 
-    public Buffalo(Location location) {
-        super(location);
+    public Buffalo(Location location, String type) {
+        super(location, type);
     }
+
 }

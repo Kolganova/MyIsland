@@ -5,8 +5,8 @@ import islandOccupants.animals.Animal;
 
 public abstract class Herbivorous extends Animal {
 
-    public Herbivorous(Location location) {
-        super(location);
+    public Herbivorous(Location location, String type) {
+        super(location, type);
     }
 
     @Override

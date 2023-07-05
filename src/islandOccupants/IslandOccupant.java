@@ -7,28 +7,19 @@ import java.util.concurrent.atomic.AtomicInteger;
 public abstract class IslandOccupant {
     Location location;
     private static int maxAmountOfOccupantsOnLocation;
-    private static AtomicInteger currentAmountOfOccupantsOnLocation;
     private int age;
-    private int id;
+    private final int id;
     private AtomicInteger weight;
+    private final String type;
 
-    public IslandOccupant(Location location) {
+    public IslandOccupant(Location location, String type) {
         this.location = location;
+        this.type = type;
         location.addOccupantInLocation(this);
+        id = this.hashCode();
     }
 
     public abstract Object checkAgingPhase(int age);
-    // оставить object или все таки всем enum сделать свой класс родитель?
-    // у enum'ов они бывают?
-
-
-    public AtomicInteger getCurrentAmountOfOccupantsOnLocation() {
-        return currentAmountOfOccupantsOnLocation;
-    }
-
-    public void setCurrentAmountOfOccupantsOnLocation(int currentAmountOfEntitiesOnLocation) {
-        IslandOccupant.currentAmountOfOccupantsOnLocation.getAndSet(currentAmountOfEntitiesOnLocation);
-    }
 
     public static int getMaxAmountOfOccupantsOnLocation() {
         return maxAmountOfOccupantsOnLocation;
@@ -51,8 +42,15 @@ public abstract class IslandOccupant {
     }
 
     public void die(Location location) {
-        setCurrentAmountOfOccupantsOnLocation(currentAmountOfOccupantsOnLocation.getAndDecrement());
+        this.getLocation().decrementAmountOfOccupantsOnLocation(this.type);
         location.getListOfOccupants().remove(this);
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public int getId() {
+        return id;
+    }
 }

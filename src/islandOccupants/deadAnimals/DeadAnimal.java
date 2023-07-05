@@ -5,8 +5,10 @@ import island.Location;
 import islandOccupants.IslandOccupant;
 
 public class DeadAnimal extends IslandOccupant {
-    public DeadAnimal(Location location) {
-        super(location);
+    private static boolean isPoisonous;
+    public DeadAnimal(Location location, String type) {
+        super(location, type);
+        isPoisonous = true;
     }
 
     @Override
@@ -17,5 +19,9 @@ public class DeadAnimal extends IslandOccupant {
         }
 
         return null;
+    }
+
+    public static boolean isIsPoisonous() {
+        return isPoisonous;
     }
 }
