@@ -2,14 +2,14 @@ package islandOccupants;
 
 import island.Location;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class IslandOccupant {
     Location location;
     private static int maxAmountOfOccupantsOnLocation;
     private int age;
     private final int id;
-    private AtomicInteger weight;
+    private AtomicReference<Double> weight;
     private final String type;
 
     public IslandOccupant(Location location, String type) {
@@ -52,5 +52,13 @@ public abstract class IslandOccupant {
 
     public int getId() {
         return id;
+    }
+
+    public AtomicReference<Double> getWeight() {
+        return weight;
+    }
+
+    public void setWeight(AtomicReference<Double> weight) {
+        this.weight = weight;
     }
 }

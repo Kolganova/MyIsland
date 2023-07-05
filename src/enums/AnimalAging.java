@@ -1,10 +1,8 @@
 package enums;
 
 public enum AnimalAging {
-    BABY(1, 19),
-    KID(20, 49),
-    YOUNG(50, 109),
-    ADULT(110, 249),
+    KID(1, 49),
+    YOUNG(50, 249),
     OLD(250, 320);
     private final int min;
     private final int max;

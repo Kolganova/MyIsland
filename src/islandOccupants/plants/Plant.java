@@ -5,6 +5,8 @@ import island.Location;
 import islandOccupants.IslandOccupant;
 import islandOccupants.OccupantFactory;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 public abstract class Plant extends IslandOccupant {
     private static double nutritionalValue;
     private static int propagationFrequency;
@@ -13,6 +15,7 @@ public abstract class Plant extends IslandOccupant {
     public Plant(Location location, String type) {
         super(location, type);
         isPoisonous = false;
+        setWeight(new AtomicReference<>(1.0));
     }
 
     @Override
