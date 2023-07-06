@@ -11,21 +11,30 @@ import islandOccupants.deadAnimals.DeadAnimal;
 import islandOccupants.plants.Plant;
 
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class Animal extends IslandOccupant implements Movable, Eatable {
-    private static int maxAmountOfMoves;
-    private static int satietyCostOnMove;
-    private static boolean isPoisonProtected;
+    private int maxAmountOfMoves;
+    private int satietyCostOnMove;
+    private boolean isPoisonProtected;
+    private final AtomicReference<Double> currentSatiety = new AtomicReference<>();
+    private final AtomicReference<Double> bellySize = new AtomicReference<>();
     private final boolean isFemale;
     private int moveCounter;
-    private int bellySize;
     Random random = new Random();
+
+    {
+        isFemale = random.nextBoolean();
+    }
 
     public Animal(Location location, String type) {
         super(location, type);
         setAge(random.nextInt(300));
-        isFemale = random.nextBoolean();
-        satietyCostOnMove = bellySize / 5;
+//        satietyCostOnMove = (int) (bellySize.get() / 5);
+//        вот с этим полем надо разобраться, мб устанавливать его в {} не статическом?
+
+//         а еще нужен второй конструктор? или короче что-то для тех случаев,
+//        когда животное появляется из multiply
     }
 
     @Override
@@ -40,19 +49,21 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable 
     }
 
     @Override
-    public AnimalAging checkAgingPhase(int age) {
+    public AnimalAging checkAgingPhase() {
         for (AnimalAging temp : AnimalAging.values()) {
-            if (age >= temp.getMin() && age <= temp.getMax())
+            if (this.getAge() >= temp.getMin() && this.getAge() <= temp.getMax())
                 return temp;
         }
 
         return null;
     }
 
-    public boolean isReadyToMultiply() {
+    public boolean isAbleToMultiply() {
+        int currentAmountOfOccupants = this.getLocation().getMapWithOccupantsOnLocation().get(getType()).get();
+        boolean isGrownEnough = checkAgingPhase() == AnimalAging.YOUNG;
+        boolean isEnoughSpaceOnLocation = currentAmountOfOccupants < getMaxAmountOfOccupants();
 
-        return (checkAgingPhase(this.getAge()) == AnimalAging.YOUNG);
-        // проверить зрелость и мб чота еще, надо карту посмотреть
+        return (isGrownEnough && isEnoughSpaceOnLocation);
     }
 
     public static boolean isCoupleAppropriate(Animal occupant1, Animal occupant2) {
@@ -62,7 +73,7 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable 
         synchronized (partner1) {
             synchronized (partner2) {
                 if ((partner1.isFemale && !(partner2.isFemale())) || (partner2.isFemale && !(partner1.isFemale()))) {
-                    if (partner1.isReadyToMultiply() && partner2.isReadyToMultiply()) {
+                    if (partner1.isAbleToMultiply() && partner2.isAbleToMultiply()) {
                         isApproved = true;
                     }
                 }
@@ -72,6 +83,7 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable 
         return isApproved;
     }
     // а вот для вызова этого метода нужно будет проверить есть ли место для нового животного на локации
+    // проверка простая - если в нашем листе значение по ключу меньше, чем maxAmount, то размножаемся
 
     public synchronized void multiply() {
         OccupantFactory.setLocation(this.getLocation());
@@ -84,11 +96,27 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable 
         return isFemale;
     }
 
-    public static boolean isIsPoisonProtected() {
+    public boolean isIsPoisonProtected() {
         return isPoisonProtected;
     }
 
-    public static void setIsPoisonProtected(boolean isPoisonProtected) {
-        Animal.isPoisonProtected = isPoisonProtected;
+    public void setIsPoisonProtected(boolean isPoisonProtected) {
+        this.isPoisonProtected = isPoisonProtected;
+    }
+
+    public int getMaxAmountOfMoves() {
+        return maxAmountOfMoves;
+    }
+
+    public void setMaxAmountOfMoves(int maxAmountOfMoves) {
+        this.maxAmountOfMoves = maxAmountOfMoves;
+    }
+
+    public AtomicReference<Double> getBellySize() {
+        return bellySize;
+    }
+
+    public void setBellySize(Double bellySize) {
+        this.bellySize.set(bellySize);
     }
 }

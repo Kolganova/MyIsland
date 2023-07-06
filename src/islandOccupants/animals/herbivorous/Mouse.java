@@ -2,18 +2,16 @@ package islandOccupants.animals.herbivorous;
 
 import island.Location;
 
-import java.util.concurrent.atomic.AtomicReference;
-
 public class Mouse extends Herbivorous {
-
-    static {
-        setMaxAmountOfOccupantsOnLocation(500);
-    }
 
     public Mouse(Location location, String type) {
         super(location, type);
+        setMaxAmountOfOccupants(500);
         setIsPoisonProtected(true);
-        setWeight(new AtomicReference<>(0.05));
+        setWeight(0.05);
+        setBellySize(0.01);
+        setMaxAmountOfMoves(1);
+        location.addOccupantInLocation(this);
     }
 
 }

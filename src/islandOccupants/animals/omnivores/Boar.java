@@ -2,18 +2,16 @@ package islandOccupants.animals.omnivores;
 
 import island.Location;
 
-import java.util.concurrent.atomic.AtomicReference;
-
 public class Boar extends Omnivores {
-
-    static {
-        setMaxAmountOfOccupantsOnLocation(50);
-    }
 
     public Boar(Location location, String type) {
         super(location, type);
+        setMaxAmountOfOccupants(50);
         setIsPoisonProtected(true);
-        setWeight(new AtomicReference<>(400.0));
+        setWeight(400.0);
+        setBellySize(50.0);
+        setMaxAmountOfMoves(2);
+        location.addOccupantInLocation(this);
     }
 
 }

@@ -52,7 +52,7 @@ public class Island {
         try {
             service.submit(runnable).get();
         } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         service.shutdown();
     }

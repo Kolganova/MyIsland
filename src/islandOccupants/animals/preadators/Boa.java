@@ -2,17 +2,16 @@ package islandOccupants.animals.preadators;
 
 import island.Location;
 
-import java.util.concurrent.atomic.AtomicReference;
-
 public class Boa extends Predator {
 
-    static {
-        setMaxAmountOfOccupantsOnLocation(30);
-    }
     public Boa(Location location, String type) {
         super(location, type);
+        setMaxAmountOfOccupants(30);
         setIsPoisonProtected(true);
-        setWeight(new AtomicReference<>(15.0));
+        setWeight(15.0);
+        setBellySize(3.0);
+        setMaxAmountOfMoves(1);
+        location.addOccupantInLocation(this);
     }
 
 }

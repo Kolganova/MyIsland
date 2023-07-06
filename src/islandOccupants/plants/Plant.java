@@ -5,23 +5,23 @@ import island.Location;
 import islandOccupants.IslandOccupant;
 import islandOccupants.OccupantFactory;
 
-import java.util.concurrent.atomic.AtomicReference;
-
 public abstract class Plant extends IslandOccupant {
     private static double nutritionalValue;
     private static int propagationFrequency;
     private static boolean isPoisonous;
 
+    static {
+        isPoisonous = false;
+    }
+
     public Plant(Location location, String type) {
         super(location, type);
-        isPoisonous = false;
-        setWeight(new AtomicReference<>(1.0));
     }
 
     @Override
-    public PlantAging checkAgingPhase(int age) {
+    public PlantAging checkAgingPhase() {
         for (PlantAging temp : PlantAging.values()) {
-            if (age >= temp.getMin() && age <= temp.getMax())
+            if (this.getAge() >= temp.getMin() && this.getAge() <= temp.getMax())
                 return temp;
         }
 
@@ -30,11 +30,10 @@ public abstract class Plant extends IslandOccupant {
 
     public synchronized void multiply() {
         if (this.getLocation().getMapWithOccupantsOnLocation().get(this.getType()).get()
-                < getMaxAmountOfOccupantsOnLocation() && checkAgingPhase(getAge()) == PlantAging.GROWN) {
+                < getMaxAmountOfOccupants() && checkAgingPhase() == PlantAging.GROWN) {
             for (int i = 0; i < propagationFrequency; i++) {
                 IslandOccupant currentOccupant = OccupantFactory.createOccupant(this.getType());
                 this.getLocation().addOccupantInLocation(currentOccupant);
-                this.getLocation().incrementAmountOfOccupantsOnLocation(this.getType());
             }
         }
     }
@@ -50,7 +49,7 @@ public abstract class Plant extends IslandOccupant {
 
     public boolean isReadyToMultiply() {
 
-        return checkAgingPhase(getAge()) == PlantAging.GROWN;
+        return checkAgingPhase() == PlantAging.GROWN;
     }
 
     public static double getNutritionalValue() {

@@ -2,17 +2,15 @@ package islandOccupants.animals.herbivorous;
 
 import island.Location;
 
-import java.util.concurrent.atomic.AtomicReference;
-
 public class Sheep extends Herbivorous {
-
-    static {
-        setMaxAmountOfOccupantsOnLocation(140);
-    }
 
     public Sheep(Location location, String type) {
         super(location, type);
-        setWeight(new AtomicReference<>(70.0));
+        setMaxAmountOfOccupants(140);
+        setWeight(70.0);
+        setBellySize(15.0);
+        setMaxAmountOfMoves(3);
+        location.addOccupantInLocation(this);
     }
 
 }
