@@ -1,11 +1,11 @@
 package islandOccupants.animals.herbivorous;
 
-import enums.AnimalCreationType;
+import enums.CreationType;
 import island.Location;
 
 public class Duck extends Herbivorous {
 
-    public Duck(Location location, String type, AnimalCreationType creationType) {
+    public Duck(Location location, String type, CreationType creationType) {
         super(location, type, creationType);
         setMaxAmountOfOccupants(200);
         setWeight(1.0);

@@ -1,11 +1,12 @@
 package islandOccupants.plants;
 
+import enums.CreationType;
 import island.Location;
 
 public class PoisonFlower extends Plant {
 
-    public PoisonFlower(Location location, String type) {
-        super(location, type);
+    public PoisonFlower(Location location, String type, CreationType creationType) {
+        super(location, type, creationType);
         setMaxAmountOfOccupants(100);
         setIsPoisonous(true);
         setWeight(1.0);

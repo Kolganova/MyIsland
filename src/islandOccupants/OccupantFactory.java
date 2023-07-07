@@ -1,6 +1,6 @@
 package islandOccupants;
 
-import enums.AnimalCreationType;
+import enums.CreationType;
 import island.Location;
 import islandOccupants.animals.herbivorous.*;
 import islandOccupants.animals.omnivores.*;
@@ -8,9 +8,8 @@ import islandOccupants.animals.preadators.*;
 import islandOccupants.plants.*;
 
 public class OccupantFactory {
-    private static AnimalCreationType creationType;
 
-    public static IslandOccupant createOccupant(Location location, String type) {
+    public static IslandOccupant createOccupant(Location location, String type, CreationType creationType) {
         switch (type) {
             case "wolf" -> {
                 return new Wolf(location, type, creationType);
@@ -58,26 +57,19 @@ public class OccupantFactory {
                 return new Caterpillar(location, type, creationType);
             }
             case "flower" -> {
-                return new Flower(location, type);
+                return new Flower(location, type, creationType);
             }
             case "poisonFlower" -> {
-                return new PoisonFlower(location, type);
+                return new PoisonFlower(location, type, creationType);
             }
             case "bush" -> {
-                return new Bush(location, type);
+                return new Bush(location, type, creationType);
             }
             case "grass" -> {
-                return new Grass(location, type);
+                return new Grass(location, type, creationType);
             }
         }
         return null;
     }
 
-    public static AnimalCreationType getCreationType() {
-        return creationType;
-    }
-
-    public static void setCreationType(AnimalCreationType creationType) {
-        OccupantFactory.creationType = creationType;
-    }
 }

@@ -1,11 +1,11 @@
 package islandOccupants.animals.herbivorous;
 
-import enums.AnimalCreationType;
+import enums.CreationType;
 import island.Location;
 
 public class Horse extends Herbivorous {
 
-    public Horse(Location location, String type, AnimalCreationType creationType) {
+    public Horse(Location location, String type, CreationType creationType) {
         super(location, type, creationType);
         setMaxAmountOfOccupants(20);
         setWeight(400.0);

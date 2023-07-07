@@ -1,17 +1,19 @@
 package islandOccupants.animals.omnivores;
 
-import enums.AnimalCreationType;
+import enums.CreationType;
 import island.Location;
+import islandOccupants.IslandOccupant;
 import islandOccupants.animals.Animal;
 
 public abstract class Omnivores extends Animal {
 
-    public Omnivores(Location location, String type, AnimalCreationType creationType) {
+    public Omnivores(Location location, String type, CreationType creationType) {
         super(location, type, creationType);
     }
 
     @Override
-    public void move() {
+    public void eat(IslandOccupant occupant) {
 
     }
+
 }

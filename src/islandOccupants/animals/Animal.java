@@ -1,17 +1,12 @@
 package islandOccupants.animals;
 
 import enums.AnimalAging;
-import enums.AnimalCreationType;
+import enums.CreationType;
 import interfaces.*;
 import island.Location;
 import islandOccupants.IslandOccupant;
 import islandOccupants.OccupantFactory;
-import islandOccupants.animals.herbivorous.Herbivorous;
-import islandOccupants.animals.preadators.Predator;
-import islandOccupants.deadAnimals.DeadAnimal;
-import islandOccupants.plants.Plant;
 
-import java.util.Random;
 import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class Animal extends IslandOccupant implements Movable, Eatable {
@@ -22,39 +17,23 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable 
     private final AtomicReference<Double> bellySize = new AtomicReference<>();
     private boolean isFemale;
     private int moveCounter;
-    Random random = new Random();
 
-    public Animal(Location location, String type, AnimalCreationType creationType) {
+    public Animal(Location location, String type, CreationType creationType) {
         super(location, type);
         switch (creationType) {
             case NEWBORN -> setNewbornAnimal();
-            case START_ANIMAL -> setStartAnimal();
+            case START_OCCUPANT -> setStartAnimal();
         }
     }
 
     private void setNewbornAnimal() {
-        isFemale = random.nextBoolean();
+        isFemale = getRandom().nextBoolean();
         setAge(1);
     }
 
     private void setStartAnimal() {
-        isFemale = random.nextBoolean();
-        setAge(random.nextInt(300));
-    }
-
-    private void setMovingAnimal() {
-
-    }
-
-    @Override
-    public synchronized void eat(IslandOccupant occupant) {
-        if (!(occupant instanceof DeadAnimal || occupant instanceof Herbivorous)) {
-            if (occupant instanceof Predator) {
-                // то его едят скорее всего
-            } else if (occupant instanceof Plant) {
-                // то он его ест
-            }
-        }
+        isFemale = getRandom().nextBoolean();
+        setAge(getRandom().nextInt(300));
     }
 
     public boolean isAbleToMultiply() {
@@ -76,7 +55,6 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable 
                         isApproved = true;
                     }
                 }
-                // мб поменять местами if'ы
             }
         }
 
@@ -84,18 +62,16 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable 
     }
 
 
-
     // а вот для вызова этого метода нужно будет проверить есть ли место для нового животного на локации
     // проверка простая - если в нашем листе значение по ключу меньше, чем maxAmount, то размножаемся
-
     public synchronized void multiply() {
-        OccupantFactory.createOccupant(this.getLocation(), this.getType());
-        this.getLocation().incrementAmountOfOccupantsOnLocation(this.getType());
+        OccupantFactory.createOccupant(this.getLocation(), this.getType(), CreationType.NEWBORN);
     }
 
-    private void setFieldsToMovingAnimal(IslandOccupant occupant) {
-        // метод для того, что бы после создания животного передать ему все
-        // его старые параметры
+    @Override
+    public void move(Location location) {
+        location.addOccupantInLocation(this);
+        this.die(this.getLocation());
     }
 
     public boolean isFemale() {
@@ -132,5 +108,9 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable 
 
     public void setSatietyCostOnMove(double satietyCostOnMove) {
         this.satietyCostOnMove = satietyCostOnMove;
+    }
+
+    public AtomicReference<Double> getCurrentSatiety() {
+        return currentSatiety;
     }
 }

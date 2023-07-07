@@ -1,11 +1,11 @@
 package islandOccupants.animals.preadators;
 
-import enums.AnimalCreationType;
+import enums.CreationType;
 import island.Location;
 
 public class Fox extends Predator {
 
-    public Fox(Location location, String type, AnimalCreationType creationType) {
+    public Fox(Location location, String type, CreationType creationType) {
         super(location, type, creationType);
         setMaxAmountOfOccupants(30);
         setWeight(8.0);

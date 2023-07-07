@@ -1,26 +1,19 @@
-import enums.AnimalCreationType;
 import island.Location;
 import island.Island;
-import islandOccupants.OccupantFactory;
-
-import static island.Location.getCounter;
+import islandOccupants.animals.herbivorous.Deer;
 
 public class Main {
     public static void main(String[] args) {
-        Island myIsland = new Island(1, 2);
+        Island myIsland = new Island(2, 4);
         Location location = myIsland.getListOfLocations().get(0).get(0);
-        System.out.println(location.getListOfOccupants());
-        System.out.println();
-        System.out.println(getCounter());
+//        System.out.println(location.getListOfOccupants());
         System.out.println(location.getMapWithOccupantsOnLocation());
-        System.out.println(location.getListOfOccupants().get(0));
-        for (int i = 0; i < 300; i++) {
-            OccupantFactory.setCreationType(AnimalCreationType.NEWBORN);
-            location.addOccupantInLocation(OccupantFactory.createOccupant(location, "deer"));
-        }
-        System.out.println(myIsland.getListOfLocations().get(0).get(1).getMapWithOccupantsOnLocation());
-//        вот эта параша сверху не работает. не то что я :(
         System.out.println();
+//        System.out.println(getCounter());
+        Deer d = (Deer) location.getListOfOccupants().get(0);
+        d.multiply();
+        System.out.println(location.getMapWithOccupantsOnLocation());
+        System.out.println(location.getListOfOccupants());
 
     }
 }

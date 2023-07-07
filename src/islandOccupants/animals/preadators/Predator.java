@@ -1,6 +1,6 @@
 package islandOccupants.animals.preadators;
 
-import enums.AnimalCreationType;
+import enums.CreationType;
 import island.Location;
 import islandOccupants.IslandOccupant;
 import islandOccupants.animals.Animal;
@@ -11,7 +11,7 @@ import islandOccupants.plants.Plant;
 
 public abstract class Predator extends Animal {
 
-    public Predator(Location location, String type, AnimalCreationType creationType) {
+    public Predator(Location location, String type, CreationType creationType) {
         super(location, type, creationType);
     }
 
@@ -31,11 +31,6 @@ public abstract class Predator extends Animal {
         // и в конце каждого варианта сделать что он поел
         // мб переименовать boolean. смысл в том что бы он хотя бы попробовал поесть
         // т.е. если хищнику попадется растение, то ему нужно попробовать еще раз
-    }
-
-    @Override
-    public synchronized void move() {
-        // все двигаются по-одинаковому?
     }
 
 }

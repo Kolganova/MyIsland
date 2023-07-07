@@ -1,8 +1,7 @@
 package island;
 
-import enums.AnimalCreationType;
+import enums.CreationType;
 import islandOccupants.IslandOccupant;
-import islandOccupants.OccupantFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,22 +26,25 @@ public class Location {
         return listOfOccupants;
     }
 
-    public void addOccupantInLocation(IslandOccupant occupant) {
+    public boolean addOccupantInLocation(IslandOccupant occupant) {
         final int maxAmountOfOccupants = occupant.getMaxAmountOfOccupants();
         final int currentAmountOfOccupants = mapWithOccupantsOnLocation.get(occupant.getType()).get();
         if (maxAmountOfOccupants > currentAmountOfOccupants) {
             listOfOccupants.add(occupant);
             incrementAmountOfOccupantsOnLocation(occupant.getType());
+
+            return true;
         }
+
+        return false;
     }
 
     protected synchronized void startAnimalAmountCreator() { // название мб поменять
         for (String type : this.getMapWithOccupantsOnLocation().keySet()) {
-            OccupantFactory.setCreationType(AnimalCreationType.NEWBORN);
-            IslandOccupant occupant = createOccupant(this, type);
+            IslandOccupant occupant = createOccupant(this, type, CreationType.START_OCCUPANT);
             int max = (occupant.getMaxAmountOfOccupants() / 2 - 1);
             for (int i = 0; i < max; i++) {
-                createOccupant(this, type);
+                createOccupant(this, type, CreationType.START_OCCUPANT);
                 counter.getAndIncrement();
             }
         }

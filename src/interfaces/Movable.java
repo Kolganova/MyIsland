@@ -1,6 +1,8 @@
 package interfaces;
 
+import island.Location;
+
 public interface Movable {
 
-    public void move();
+    void move(Location location);
 }

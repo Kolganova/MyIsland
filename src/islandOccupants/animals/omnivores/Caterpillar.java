@@ -1,11 +1,11 @@
 package islandOccupants.animals.omnivores;
 
-import enums.AnimalCreationType;
+import enums.CreationType;
 import island.Location;
 
 public class Caterpillar extends Omnivores {
 
-    public Caterpillar(Location location, String type, AnimalCreationType creationType) {
+    public Caterpillar(Location location, String type, CreationType creationType) {
         super(location, type, creationType);
         setMaxAmountOfOccupants(1000);
         setIsPoisonProtected(true);
@@ -15,4 +15,7 @@ public class Caterpillar extends Omnivores {
         setMaxAmountOfMoves(0);
         location.addOccupantInLocation(this);
     }
+
+
+    // ей нельзя есть кусты
 }

@@ -1,12 +1,12 @@
 package islandOccupants.animals.preadators;
 
-import enums.AnimalCreationType;
+import enums.CreationType;
 import island.Location;
 
 
 public class Eagle extends Predator {
 
-    public Eagle(Location location, String type, AnimalCreationType creationType) {
+    public Eagle(Location location, String type, CreationType creationType) {
         super(location, type, creationType);
         setMaxAmountOfOccupants(20);
         setIsPoisonProtected(true);

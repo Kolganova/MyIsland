@@ -4,6 +4,7 @@ import enums.Aging;
 import island.Location;
 
 import java.util.Objects;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class IslandOccupant {
@@ -13,6 +14,8 @@ public abstract class IslandOccupant {
     private int age;
     private final int id;
     Location location;
+
+    Random random = new Random();
 
     public IslandOccupant(Location location, String type) {
         this.location = location;
@@ -81,5 +84,9 @@ public abstract class IslandOccupant {
     @Override
     public int hashCode() {
         return Objects.hash(maxAmountOfOccupants, weight, type, age, location);
+    }
+
+    public Random getRandom() {
+        return random;
     }
 }
