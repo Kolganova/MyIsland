@@ -1,5 +1,6 @@
 package islandOccupants;
 
+import enums.Aging;
 import island.Location;
 
 import java.util.Objects;
@@ -17,10 +18,16 @@ public abstract class IslandOccupant {
         this.location = location;
         this.type = type;
         id = this.hashCode();
-//        location.addOccupantInLocation(this);
     }
 
-    public abstract Object checkAgingPhase();
+    public <T extends Aging> T checkAgingPhase(Class<T> enumClass) {
+        for (T phase : enumClass.getEnumConstants()) {
+            if (this.getAge() >= phase.getMin() && this.getAge() <= phase.getMax())
+                return phase;
+        }
+
+        return null;
+    }
 
     public int getMaxAmountOfOccupants() {
         return maxAmountOfOccupants;

@@ -6,40 +6,33 @@ import islandOccupants.IslandOccupant;
 import islandOccupants.OccupantFactory;
 
 public abstract class Plant extends IslandOccupant {
-    private static double nutritionalValue;
-    private static int propagationFrequency;
-    private static boolean isPoisonous;
-
-    static {
-        isPoisonous = false;
-    }
+    private int propagationFrequency;
+    private boolean isPoisonous;
 
     public Plant(Location location, String type) {
         super(location, type);
     }
 
-    @Override
-    public PlantAging checkAgingPhase() {
-        for (PlantAging temp : PlantAging.values()) {
-            if (this.getAge() >= temp.getMin() && this.getAge() <= temp.getMax())
-                return temp;
+    public boolean isAbleToMultiply() {
+        boolean isAble = false;
+        int currentAmountOfPlants = this.getLocation().getMapWithOccupantsOnLocation().get(this.getType()).get();
+
+        if (currentAmountOfPlants < getMaxAmountOfOccupants() && checkAgingPhase(PlantAging.class) == PlantAging.GROWN) {
+            isAble = true;
         }
 
-        return null;
+        return isAble;
     }
 
     public synchronized void multiply() {
-        if (this.getLocation().getMapWithOccupantsOnLocation().get(this.getType()).get()
-                < getMaxAmountOfOccupants() && checkAgingPhase() == PlantAging.GROWN) {
+        if (this.isAbleToMultiply()) {
             for (int i = 0; i < propagationFrequency; i++) {
-                IslandOccupant currentOccupant = OccupantFactory.createOccupant(this.getType());
+                IslandOccupant currentOccupant = OccupantFactory.createOccupant(this.getLocation(), this.getType());
                 this.getLocation().addOccupantInLocation(currentOccupant);
             }
         }
     }
-    // сделать многопоточным?
-
-        /* откуда его будут вызывать? аргументы тоже под вопросом
+    /* сделать многопоточным?
         должен вызываться в пуле потоков? для того что бы быстро обрабатывать все
         растения на локации
         в пуле "хода" можно просто понимать через instanceof что это за класс и исходя из этого
@@ -47,32 +40,19 @@ public abstract class Plant extends IslandOccupant {
         т.е. растение только распространяется и "стареет" (и мб меняет enums.PlantAging)
          */
 
-    public boolean isReadyToMultiply() {
-
-        return checkAgingPhase() == PlantAging.GROWN;
-    }
-
-    public static double getNutritionalValue() {
-        return nutritionalValue;
-    }
-
-    public static void setNutritionalValue(double nutritionalValue) {
-        Plant.nutritionalValue = nutritionalValue;
-    }
-
-    public static int getPropagationFrequency() {
+    public int getPropagationFrequency() {
         return propagationFrequency;
     }
 
-    public static void setPropagationFrequency(int propagationFrequency) {
-        Plant.propagationFrequency = propagationFrequency;
+    public void setPropagationFrequency(int propagationFrequency) {
+        this.propagationFrequency = propagationFrequency;
     }
 
-    public static boolean isIsPoisonous() {
+    public boolean isIsPoisonous() {
         return isPoisonous;
     }
 
-    public static void setIsPoisonous(boolean isPoisonous) {
-        Plant.isPoisonous = isPoisonous;
+    public void setIsPoisonous(boolean isPoisonous) {
+        this.isPoisonous = isPoisonous;
     }
 }

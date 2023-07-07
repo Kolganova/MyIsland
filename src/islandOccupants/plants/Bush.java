@@ -7,7 +7,9 @@ public class Bush extends Plant {
     public Bush(Location location, String type) {
         super(location, type);
         setMaxAmountOfOccupants(100);
+        setIsPoisonous(false);
         setWeight(3.0);
+        setPropagationFrequency(1);
         location.addOccupantInLocation(this);
 
         /* нужно сделать для всех по 2 конструктора - 1 для инициализации острова,

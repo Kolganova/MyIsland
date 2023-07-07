@@ -1,62 +1,61 @@
 package islandOccupants;
 
+import enums.AnimalCreationType;
 import island.Location;
 import islandOccupants.animals.herbivorous.*;
-import islandOccupants.animals.omnivores.Boar;
-import islandOccupants.animals.omnivores.Caterpillar;
+import islandOccupants.animals.omnivores.*;
 import islandOccupants.animals.preadators.*;
 import islandOccupants.plants.*;
 
 public class OccupantFactory {
+    private static AnimalCreationType creationType;
 
-    private static Location location;
-
-    public static IslandOccupant createOccupant(String type) {
+    public static IslandOccupant createOccupant(Location location, String type) {
         switch (type) {
             case "wolf" -> {
-                return new Wolf(location, type);
+                return new Wolf(location, type, creationType);
             }
             case "boa" -> {
-                return new Boa(location, type);
+                return new Boa(location, type, creationType);
             }
             case "fox" -> {
-                return new Fox(location, type);
+                return new Fox(location, type, creationType);
             }
             case "bear" -> {
-                return new Bear(location, type);
+                return new Bear(location, type, creationType);
             }
             case "eagle" -> {
-                return new Eagle(location, type);
+                return new Eagle(location, type, creationType);
             }
             case "horse" -> {
-                return new Horse(location, type);
+                return new Horse(location, type, creationType);
             }
             case "deer" -> {
-                return new Deer(location, type);
+                return new Deer(location, type, creationType);
             }
             case "rabbit" -> {
-                return new Rabbit(location, type);
+                return new Rabbit(location, type, creationType);
             }
             case "mouse" -> {
-                return new Mouse(location, type);
+                return new Mouse(location, type, creationType);
             }
             case "goat" -> {
-                return new Goat(location, type);
+                return new Goat(location, type, creationType);
             }
             case "sheep" -> {
-                return new Sheep(location, type);
+                return new Sheep(location, type, creationType);
             }
             case "boar" -> {
-                return new Boar(location, type);
+                return new Boar(location, type, creationType);
             }
             case "buffalo" -> {
-                return new Buffalo(location, type);
+                return new Buffalo(location, type, creationType);
             }
             case "duck" -> {
-                return new Duck(location, type);
+                return new Duck(location, type, creationType);
             }
             case "caterpillar" -> {
-                return new Caterpillar(location, type);
+                return new Caterpillar(location, type, creationType);
             }
             case "flower" -> {
                 return new Flower(location, type);
@@ -74,12 +73,11 @@ public class OccupantFactory {
         return null;
     }
 
-    public static Location getLocation() {
-        return location;
+    public static AnimalCreationType getCreationType() {
+        return creationType;
     }
 
-    public static void setLocation(Location location) {
-        OccupantFactory.location = location;
+    public static void setCreationType(AnimalCreationType creationType) {
+        OccupantFactory.creationType = creationType;
     }
-
 }

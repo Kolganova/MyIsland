@@ -1,3 +1,4 @@
+import enums.AnimalCreationType;
 import island.Location;
 import island.Island;
 import islandOccupants.OccupantFactory;
@@ -14,7 +15,8 @@ public class Main {
         System.out.println(location.getMapWithOccupantsOnLocation());
         System.out.println(location.getListOfOccupants().get(0));
         for (int i = 0; i < 300; i++) {
-            location.addOccupantInLocation(OccupantFactory.createOccupant("deer"));
+            OccupantFactory.setCreationType(AnimalCreationType.NEWBORN);
+            location.addOccupantInLocation(OccupantFactory.createOccupant(location, "deer"));
         }
         System.out.println(myIsland.getListOfLocations().get(0).get(1).getMapWithOccupantsOnLocation());
 //        вот эта параша сверху не работает. не то что я :(

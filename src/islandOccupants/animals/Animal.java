@@ -1,6 +1,7 @@
 package islandOccupants.animals;
 
 import enums.AnimalAging;
+import enums.AnimalCreationType;
 import interfaces.*;
 import island.Location;
 import islandOccupants.IslandOccupant;
@@ -15,26 +16,34 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class Animal extends IslandOccupant implements Movable, Eatable {
     private int maxAmountOfMoves;
-    private int satietyCostOnMove;
+    private double satietyCostOnMove;
     private boolean isPoisonProtected;
     private final AtomicReference<Double> currentSatiety = new AtomicReference<>();
     private final AtomicReference<Double> bellySize = new AtomicReference<>();
-    private final boolean isFemale;
+    private boolean isFemale;
     private int moveCounter;
     Random random = new Random();
 
-    {
-        isFemale = random.nextBoolean();
+    public Animal(Location location, String type, AnimalCreationType creationType) {
+        super(location, type);
+        switch (creationType) {
+            case NEWBORN -> setNewbornAnimal();
+            case START_ANIMAL -> setStartAnimal();
+        }
     }
 
-    public Animal(Location location, String type) {
-        super(location, type);
-        setAge(random.nextInt(300));
-//        satietyCostOnMove = (int) (bellySize.get() / 5);
-//        вот с этим полем надо разобраться, мб устанавливать его в {} не статическом?
+    private void setNewbornAnimal() {
+        isFemale = random.nextBoolean();
+        setAge(1);
+    }
 
-//         а еще нужен второй конструктор? или короче что-то для тех случаев,
-//        когда животное появляется из multiply
+    private void setStartAnimal() {
+        isFemale = random.nextBoolean();
+        setAge(random.nextInt(300));
+    }
+
+    private void setMovingAnimal() {
+
     }
 
     @Override
@@ -48,19 +57,9 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable 
         }
     }
 
-    @Override
-    public AnimalAging checkAgingPhase() {
-        for (AnimalAging temp : AnimalAging.values()) {
-            if (this.getAge() >= temp.getMin() && this.getAge() <= temp.getMax())
-                return temp;
-        }
-
-        return null;
-    }
-
     public boolean isAbleToMultiply() {
         int currentAmountOfOccupants = this.getLocation().getMapWithOccupantsOnLocation().get(getType()).get();
-        boolean isGrownEnough = checkAgingPhase() == AnimalAging.YOUNG;
+        boolean isGrownEnough = checkAgingPhase(AnimalAging.class) == AnimalAging.YOUNG;
         boolean isEnoughSpaceOnLocation = currentAmountOfOccupants < getMaxAmountOfOccupants();
 
         return (isGrownEnough && isEnoughSpaceOnLocation);
@@ -77,19 +76,26 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable 
                         isApproved = true;
                     }
                 }
+                // мб поменять местами if'ы
             }
         }
 
         return isApproved;
     }
+
+
+
     // а вот для вызова этого метода нужно будет проверить есть ли место для нового животного на локации
     // проверка простая - если в нашем листе значение по ключу меньше, чем maxAmount, то размножаемся
 
     public synchronized void multiply() {
-        OccupantFactory.setLocation(this.getLocation());
-        OccupantFactory.createOccupant(this.getType());
+        OccupantFactory.createOccupant(this.getLocation(), this.getType());
         this.getLocation().incrementAmountOfOccupantsOnLocation(this.getType());
-        // можем допускать до размножения после проверки! если он подходит, то пускаем его в метод
+    }
+
+    private void setFieldsToMovingAnimal(IslandOccupant occupant) {
+        // метод для того, что бы после создания животного передать ему все
+        // его старые параметры
     }
 
     public boolean isFemale() {
@@ -118,5 +124,13 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable 
 
     public void setBellySize(Double bellySize) {
         this.bellySize.set(bellySize);
+    }
+
+    public double getSatietyCostOnMove() {
+        return satietyCostOnMove;
+    }
+
+    public void setSatietyCostOnMove(double satietyCostOnMove) {
+        this.satietyCostOnMove = satietyCostOnMove;
     }
 }

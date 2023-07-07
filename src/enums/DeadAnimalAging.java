@@ -1,6 +1,6 @@
 package enums;
 
-public enum DeadAnimalAging {
+public enum DeadAnimalAging implements Aging {
     FRESH(1, 19),
     NOT_FRESH(20, 50);
     private final int min;
@@ -11,11 +11,14 @@ public enum DeadAnimalAging {
         this.max = max;
     }
 
+    @Override
     public int getMin() {
         return min;
     }
 
+    @Override
     public int getMax() {
         return max;
     }
+
 }

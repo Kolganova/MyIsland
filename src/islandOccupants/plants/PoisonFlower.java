@@ -9,6 +9,7 @@ public class PoisonFlower extends Plant {
         setMaxAmountOfOccupants(100);
         setIsPoisonous(true);
         setWeight(1.0);
+        setPropagationFrequency(1);
         location.addOccupantInLocation(this);
     }
 

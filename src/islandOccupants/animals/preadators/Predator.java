@@ -1,5 +1,6 @@
 package islandOccupants.animals.preadators;
 
+import enums.AnimalCreationType;
 import island.Location;
 import islandOccupants.IslandOccupant;
 import islandOccupants.animals.Animal;
@@ -10,8 +11,8 @@ import islandOccupants.plants.Plant;
 
 public abstract class Predator extends Animal {
 
-    public Predator(Location location, String type) {
-        super(location, type);
+    public Predator(Location location, String type, AnimalCreationType creationType) {
+        super(location, type, creationType);
     }
 
     @Override
