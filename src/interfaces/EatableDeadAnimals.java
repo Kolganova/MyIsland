@@ -22,6 +22,8 @@ public interface EatableDeadAnimals extends Eatable {
                 animal.setCurrentSatiety(animalCurrentSatiety + occupantWeight);
                 deadAnimal.die();
             }
+            if (deadAnimal.getWeight().get() <= 0)
+                deadAnimal.die();
         }
     }
 }

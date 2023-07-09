@@ -6,10 +6,12 @@ import interfaces.*;
 import island.Location;
 import islandOccupants.IslandOccupant;
 import islandOccupants.OccupantFactory;
+import islandOccupants.deadAnimals.DeadAnimal;
+import islandOccupants.plants.Plant;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-public abstract class Animal extends IslandOccupant implements Movable {
+public abstract class Animal extends IslandOccupant implements Movable, Eatable {
     private int maxAmountOfMoves;
     private double satietyCostOnMove;
     private boolean isPoisonProtected;
@@ -73,6 +75,24 @@ public abstract class Animal extends IslandOccupant implements Movable {
     public void move(Location location) {
         location.addOccupantInLocation(this);
         this.die();
+    }
+
+    @Override
+    public void nutritionProcess(Animal animal, IslandOccupant occupant) {
+        double occupantWeight = occupant.getWeight().get();
+        double eaterCurrentSatiety = animal.getCurrentSatiety().get();
+        double eaterBellySize = animal.getBellySize().get();
+        boolean willBellyFitOccupant = occupantWeight + eaterCurrentSatiety <= eaterBellySize;
+        if (willBellyFitOccupant) {
+            animal.setCurrentSatiety(eaterCurrentSatiety + occupantWeight);
+        } else {
+            animal.setCurrentSatiety(eaterBellySize);
+            if (occupant instanceof Animal)
+                new DeadAnimal(animal.getLocation(), "deadAnimal");
+            else if (occupant instanceof Plant)
+                occupant.die();
+        }
+
     }
 
     public boolean isFemale() {
