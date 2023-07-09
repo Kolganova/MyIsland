@@ -1,9 +1,9 @@
-package islandOccupants.animals.herbivorous;
+package islandOccupants.animals.omnivores;
 
 import enums.CreationType;
 import island.Location;
 
-public class Duck extends Herbivorous {
+public class Duck extends Omnivores {
 
     public Duck(Location location, String type, CreationType creationType) {
         super(location, type, creationType);

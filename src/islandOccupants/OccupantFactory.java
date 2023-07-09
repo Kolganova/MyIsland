@@ -5,6 +5,7 @@ import island.Location;
 import islandOccupants.animals.herbivorous.*;
 import islandOccupants.animals.omnivores.*;
 import islandOccupants.animals.preadators.*;
+import islandOccupants.deadAnimals.DeadAnimal;
 import islandOccupants.plants.*;
 
 public class OccupantFactory {
@@ -67,6 +68,9 @@ public class OccupantFactory {
             }
             case "grass" -> {
                 return new Grass(location, type, creationType);
+            }
+            case "deadAnimal" -> {
+                return new DeadAnimal(location, type);
             }
         }
         return null;

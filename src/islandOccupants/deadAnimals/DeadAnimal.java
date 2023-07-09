@@ -4,15 +4,10 @@ import island.Location;
 import islandOccupants.IslandOccupant;
 
 public class DeadAnimal extends IslandOccupant {
-    private static final boolean IS_POISONOUS;
 
-    static {
-        IS_POISONOUS = true;
-    }
-
-    public DeadAnimal(Location location, String type, Double weight) {
+    public DeadAnimal(Location location, String type) {
         super(location, type);
-        setWeight(weight);
+        setAge(1);
         location.addOccupantInLocation(this);
     }
 

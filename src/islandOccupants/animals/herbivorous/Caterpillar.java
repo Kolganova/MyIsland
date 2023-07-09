@@ -1,9 +1,9 @@
-package islandOccupants.animals.omnivores;
+package islandOccupants.animals.herbivorous;
 
 import enums.CreationType;
 import island.Location;
 
-public class Caterpillar extends Omnivores {
+public class Caterpillar extends Herbivorous {
 
     public Caterpillar(Location location, String type, CreationType creationType) {
         super(location, type, creationType);
@@ -16,6 +16,4 @@ public class Caterpillar extends Omnivores {
         location.addOccupantInLocation(this);
     }
 
-
-    // ей нельзя есть кусты
 }

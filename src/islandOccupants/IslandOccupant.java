@@ -52,8 +52,8 @@ public abstract class IslandOccupant {
         this.age = age;
     }
 
-    public void die(Location location) {
-        this.getLocation().decrementAmountOfOccupantsOnLocation(type);
+    public void die() {
+        location.decrementAmountOfOccupantsOnLocation(type);
         location.getListOfOccupants().remove(this);
     }
 

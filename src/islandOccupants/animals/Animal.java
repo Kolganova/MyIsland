@@ -9,7 +9,7 @@ import islandOccupants.OccupantFactory;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-public abstract class Animal extends IslandOccupant implements Movable, Eatable {
+public abstract class Animal extends IslandOccupant implements Movable {
     private int maxAmountOfMoves;
     private double satietyCostOnMove;
     private boolean isPoisonProtected;
@@ -20,6 +20,7 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable 
 
     public Animal(Location location, String type, CreationType creationType) {
         super(location, type);
+        setCurrentSatiety(getRandom().nextDouble(bellySize.get()));
         switch (creationType) {
             case NEWBORN -> setNewbornAnimal();
             case START_OCCUPANT -> setStartAnimal();
@@ -71,7 +72,7 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable 
     @Override
     public void move(Location location) {
         location.addOccupantInLocation(this);
-        this.die(this.getLocation());
+        this.die();
     }
 
     public boolean isFemale() {
@@ -113,4 +114,9 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable 
     public AtomicReference<Double> getCurrentSatiety() {
         return currentSatiety;
     }
+
+    public void setCurrentSatiety(Double currentSatiety) {
+        this.currentSatiety.set(currentSatiety);
+    }
+
 }
