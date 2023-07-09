@@ -135,4 +135,11 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable 
         this.currentSatiety.set(currentSatiety);
     }
 
+    public int getMoveCounter() {
+        return moveCounter;
+    }
+
+    public void incrementMoveCounter() {
+        moveCounter++;
+    }
 }

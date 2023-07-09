@@ -13,7 +13,7 @@ public abstract class Herbivorous extends Animal {
     }
 
     @Override
-    public boolean eat(IslandOccupant occupant) {
+    public void eat(IslandOccupant occupant) {
         if (occupant instanceof Plant) {
             if (this.isIsPoisonProtected()) {
                 nutritionProcess(this, occupant);
@@ -21,11 +21,8 @@ public abstract class Herbivorous extends Animal {
                 this.die();
                 occupant.die();
             }
-            return true;
         }
 
-        return false;
-    } // перенести потом в класс Animal и сделать типо в зависимости от того,
-    // в цикле где будем вызывать этот метод сделать while (!this.eat(occupant)), т.е. пока наш метод
-    // не вернет значение, что он поел, он будет пытаться поесть
+    }
+
 }

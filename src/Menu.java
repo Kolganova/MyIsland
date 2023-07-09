@@ -7,7 +7,11 @@ import islandOccupants.animals.Animal;
 import islandOccupants.deadAnimals.DeadAnimal;
 import islandOccupants.plants.Plant;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Menu {
 
@@ -15,30 +19,31 @@ public class Menu {
         Island myIsland = new Island(2, 10);
     }
 
-    public static void liveADay(CopyOnWriteArrayList<IslandOccupant> listOfOccupants, Island island) {
+    public void liveADayAtIsland(Island island) {
+
+    }
+
+    public static void liveADayAtLocation(CopyOnWriteArrayList<IslandOccupant> listOfOccupants, Island island) {
+        List<IslandOccupant> temp = new ArrayList<>(listOfOccupants);
+        Collections.shuffle(temp);
+        listOfOccupants.clear();
+        listOfOccupants.addAll(temp);
+
         ExecutorService executor = Executors.newFixedThreadPool(25);
         CompletionService<Void> completionService = new ExecutorCompletionService<>(executor);
-        for (IslandOccupant occupant : listOfOccupants) {
+        for (AtomicInteger i = new AtomicInteger(); i.get() <= listOfOccupants.size(); i.getAndIncrement()) {
+            int finalI = i.get();
             completionService.submit(() -> {
+                IslandOccupant occupant = listOfOccupants.get(finalI);
                 if (occupant instanceof Plant) {
                     actLikePlant((Plant) occupant);
                 } else if (occupant instanceof Animal) {
                     int dice = occupant.getRandom().nextInt(100);
-                    if (dice <= 50) {
-                        // нужно как-то во вложенном блоке синхронизации вызвать метод actLikeEatingAnimal
-                        // при этом первый должен быть животным, а второй кто угодно. соответственно,
-                        // ставить сначала instanceof Animal нельзя. Мб какие-то доп переменные нужны
+                    if (dice <= 50 && i.get() != listOfOccupants.size()-1) {
+                        actLikeEatingAnimal((Animal) occupant, listOfOccupants.get(i.getAndIncrement()));
                     }
-                    if (dice <= 75) {
-                        // здесь нужно понять как передать два разных объекта, потому что на данный момент
-                        // он размножается сам с собой
-                        Animal partner1 = (Animal) occupant;
-                        synchronized (partner1) {
-                            Animal partner2 = (Animal) occupant;
-                            synchronized (partner2) {
-                                actLikeMultipliableAnimal(partner1, partner2);
-                            }
-                        }
+                    if (dice <= 75 && i.get() != listOfOccupants.size()-1) {
+                        actLikeMultipliableAnimal((Animal) occupant, (Animal) listOfOccupants.get(i.getAndIncrement()));
                     } else {
                         actLikeMovingAnimal((Animal) occupant, island.getListOfLocations());
                     }
@@ -49,6 +54,7 @@ public class Menu {
                 return null;
             });
         }
+
     }
 
     public static void actLikePlant(Plant plant) {
@@ -63,10 +69,7 @@ public class Menu {
     }
 
     public static void actLikeEatingAnimal(Animal animal, IslandOccupant occupant) {
-        boolean didEat = false;
-        while (!didEat) {
-            didEat = animal.eat(occupant);
-        }
+        animal.eat(occupant);
         actLikeAnimal(animal);
         if (occupant instanceof Animal) {
             actLikeAnimal((Animal) occupant);
@@ -88,22 +91,22 @@ public class Menu {
     public static void actLikeMovingAnimal(Animal animal,
                                            CopyOnWriteArrayList<CopyOnWriteArrayList<Location>> listOfLocations) {
         Location animalLocation = animal.getLocation();
-
-        if (animalLocation.getIndexOfExternalList() <
-                listOfLocations.get(animalLocation.getIndexOfExternalList()).size()) {
-            animal.move(listOfLocations.get(animalLocation.getIndexOfExternalList()).get(animalLocation.getIndexOfInnerList() + 1));
-        } else {
-            animal.move(listOfLocations.get(animalLocation.getIndexOfExternalList()).get(animalLocation.getIndexOfInnerList() - 1));
+        if (animal.getMoveCounter() < animal.getMaxAmountOfMoves()) {
+            if (animalLocation.getIndexOfExternalList() <
+                    listOfLocations.get(animalLocation.getIndexOfExternalList()).size()) {
+                animal.move(listOfLocations.get(animalLocation.getIndexOfExternalList()).get(animalLocation.getIndexOfInnerList() + 1));
+            } else {
+                animal.move(listOfLocations.get(animalLocation.getIndexOfExternalList()).get(animalLocation.getIndexOfInnerList() - 1));
+            }
+            animal.incrementMoveCounter();
         }
         actLikeAnimal(animal);
-        // добавить currentAmountOfMoves
     }
 
     public static void actLikeAnimal(Animal animal) {
         animal.setCurrentSatiety(animal.getCurrentSatiety().get() - animal.getSatietyCostOnMove());
         if ((animal.checkAgingPhase(AnimalAging.class) == AnimalAging.OLD) ||
                 animal.getCurrentSatiety().get() <= 0) {
-            // под небольшим вопросом не должно ли животное сразу умирать если оч голодное
             if (animal.getRandom().nextInt(100) <= 20) {
                 animal.die();
             }

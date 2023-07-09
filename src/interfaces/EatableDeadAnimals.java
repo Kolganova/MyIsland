@@ -5,7 +5,7 @@ import islandOccupants.animals.Animal;
 import islandOccupants.deadAnimals.DeadAnimal;
 
 public interface EatableDeadAnimals extends Eatable {
-    default boolean eatDeadAnimal(Animal animal, DeadAnimal deadAnimal) {
+    default void eatDeadAnimal(Animal animal, DeadAnimal deadAnimal) {
         double deadAnimalWeight = deadAnimal.getWeight().get();
         double animalCurrentSatiety = animal.getCurrentSatiety().get();
         double animalBellySize = animal.getBellySize().get();
@@ -22,9 +22,8 @@ public interface EatableDeadAnimals extends Eatable {
                 animal.setCurrentSatiety(animalBellySize);
                 deadAnimal.setWeight(deadAnimalWeight - (animalBellySize - animalCurrentSatiety));
             }
-            return true;
         }
-        return false;
+
     }
 
 }

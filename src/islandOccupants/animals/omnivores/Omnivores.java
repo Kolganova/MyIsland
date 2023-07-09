@@ -18,7 +18,7 @@ public abstract class Omnivores extends Animal implements EatableAnimals, Eatabl
     }
 
     @Override
-    public synchronized boolean eat(IslandOccupant occupant) {
+    public void eat(IslandOccupant occupant) {
         if (occupant instanceof Plant) {
             if (this.isIsPoisonProtected()) {
                 nutritionProcess(this, occupant);
@@ -26,25 +26,22 @@ public abstract class Omnivores extends Animal implements EatableAnimals, Eatabl
                 this.die();
                 occupant.die();
             }
-            return true;
         } else if (occupant instanceof DeadAnimal && getRandom().nextBoolean()) {
-            return eatDeadAnimal(this, (DeadAnimal) occupant);
+            eatDeadAnimal(this, (DeadAnimal) occupant);
         } else {
-            return eatAnimal((Animal) occupant);
+            eatAnimal((Animal) occupant);
         }
 
     }
 
     @Override
-    public boolean eatAnimal(Animal victim) {
+    public void eatAnimal(Animal victim) {
         if (victim instanceof Caterpillar || (victim instanceof Mouse && this instanceof Boar)) {
             if (getRandom().nextInt(100) <= 60) {
                 nutritionProcess(this, victim);
-                return true;
             }
         }
 
-        return false;
     }
 
 }
