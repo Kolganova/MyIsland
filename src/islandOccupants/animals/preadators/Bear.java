@@ -10,6 +10,7 @@ public class Bear extends Predator {
         setMaxAmountOfOccupants(5);
         setWeight(500.0);
         setBellySize(80.0);
+        setCurrentSatiety(getRandom().nextDouble(this.getBellySize().get()));
         setSatietyCostOnMove(getBellySize().get() / 5);
         setMaxAmountOfMoves(2);
         location.addOccupantInLocation(this);

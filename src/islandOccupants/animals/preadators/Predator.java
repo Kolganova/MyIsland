@@ -21,10 +21,10 @@ public abstract class Predator extends Animal implements EatableAnimals, Eatable
     public synchronized boolean eat(IslandOccupant occupant) {
         if (occupant instanceof DeadAnimal) {
             eatDeadAnimal(this, (DeadAnimal) occupant);
-            return true;
         } else if (occupant instanceof Animal) {
             return eatAnimal((Animal) occupant);
         }
+
         return false;
     }
 
@@ -82,7 +82,7 @@ public abstract class Predator extends Animal implements EatableAnimals, Eatable
             }
         } else if ((this instanceof Fox && victim instanceof Mouse) || (this instanceof Bear && victim instanceof Mouse) ||
                 (this instanceof Eagle && victim instanceof Rabbit || (this instanceof Eagle && victim instanceof Mouse))) {
-            if (getRandom().nextInt(100) <= 80) {
+            if (getRandom().nextInt(100) <= 90) {
                 nutritionProcess(this, victim);
                 return true;
             }

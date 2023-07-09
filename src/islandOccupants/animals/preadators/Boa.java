@@ -11,6 +11,7 @@ public class Boa extends Predator {
         setIsPoisonProtected(true);
         setWeight(15.0);
         setBellySize(3.0);
+        setCurrentSatiety(getRandom().nextDouble(this.getBellySize().get()));
         setSatietyCostOnMove(getBellySize().get() / 5);
         setMaxAmountOfMoves(1);
         location.addOccupantInLocation(this);

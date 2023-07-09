@@ -14,9 +14,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static islandOccupants.OccupantFactory.createOccupant;
 
 public class Location {
-    private static final AtomicInteger counter = new AtomicInteger();
     private final CopyOnWriteArrayList<IslandOccupant> listOfOccupants = new CopyOnWriteArrayList<>();
     private final ConcurrentHashMap<String, AtomicInteger> mapWithOccupantsOnLocation = new ConcurrentHashMap<>();
+    private int indexOfInnerList;
+    private int indexOfExternalList;
 
     public Location() {
         setMapWithOccupantsOnLocation();
@@ -45,13 +46,8 @@ public class Location {
             int max = (occupant.getMaxAmountOfOccupants() / 2 - 1);
             for (int i = 0; i < max; i++) {
                 createOccupant(this, type, CreationType.START_OCCUPANT);
-                counter.getAndIncrement();
             }
         }
-    }
-
-    public static AtomicInteger getCounter() {
-        return counter;
     }
 
     public ConcurrentHashMap<String, AtomicInteger> getMapWithOccupantsOnLocation() {
@@ -89,4 +85,19 @@ public class Location {
         });
     }
 
+    public int getIndexOfInnerList() {
+        return indexOfInnerList;
+    }
+
+    public void setIndexOfInnerList(int indexOfInnerList) {
+        this.indexOfInnerList = indexOfInnerList;
+    }
+
+    public int getIndexOfExternalList() {
+        return indexOfExternalList;
+    }
+
+    public void setIndexOfExternalList(int indexOfExternalList) {
+        this.indexOfExternalList = indexOfExternalList;
+    }
 }

@@ -11,6 +11,7 @@ public class Boar extends Omnivores {
         setIsPoisonProtected(true);
         setWeight(400.0);
         setBellySize(50.0);
+        setCurrentSatiety(getRandom().nextDouble(this.getBellySize().get()));
         setSatietyCostOnMove(getBellySize().get() / 5);
         setMaxAmountOfMoves(2);
         location.addOccupantInLocation(this);

@@ -7,7 +7,6 @@ import island.Location;
 import islandOccupants.IslandOccupant;
 import islandOccupants.OccupantFactory;
 import islandOccupants.deadAnimals.DeadAnimal;
-import islandOccupants.plants.Plant;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -22,7 +21,6 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable 
 
     public Animal(Location location, String type, CreationType creationType) {
         super(location, type);
-        setCurrentSatiety(getRandom().nextDouble(bellySize.get()));
         switch (creationType) {
             case NEWBORN -> setNewbornAnimal();
             case START_OCCUPANT -> setStartAnimal();
@@ -64,9 +62,6 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable 
         return isApproved;
     }
 
-
-    // а вот для вызова этого метода нужно будет проверить есть ли место для нового животного на локации
-    // проверка простая - если в нашем листе значение по ключу меньше, чем maxAmount, то размножаемся
     public synchronized void multiply() {
         OccupantFactory.createOccupant(this.getLocation(), this.getType(), CreationType.NEWBORN);
     }
@@ -85,14 +80,15 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable 
         boolean willBellyFitOccupant = occupantWeight + eaterCurrentSatiety <= eaterBellySize;
         if (willBellyFitOccupant) {
             animal.setCurrentSatiety(eaterCurrentSatiety + occupantWeight);
+            occupant.die();
         } else {
             animal.setCurrentSatiety(eaterBellySize);
-            if (occupant instanceof Animal)
-                new DeadAnimal(animal.getLocation(), "deadAnimal");
-            else if (occupant instanceof Plant)
-                occupant.die();
+            if (occupant instanceof Animal) {
+                double deadAnimalWeight = occupantWeight - (eaterBellySize - eaterCurrentSatiety);
+                new DeadAnimal(animal.getLocation(), "deadAnimal", deadAnimalWeight);
+            }
+            occupant.die();
         }
-
     }
 
     public boolean isFemale() {

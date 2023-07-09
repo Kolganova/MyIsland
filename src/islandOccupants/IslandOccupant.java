@@ -89,4 +89,9 @@ public abstract class IslandOccupant {
     public Random getRandom() {
         return random;
     }
+
+    public void incrementAge() {
+        this.age++;
+    }
+
 }

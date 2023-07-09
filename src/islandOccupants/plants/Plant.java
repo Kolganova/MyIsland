@@ -32,12 +32,10 @@ public abstract class Plant extends IslandOccupant {
     public synchronized void multiply() {
         if (this.isAbleToMultiply()) {
             for (int i = 0; i < propagationFrequency; i++) {
-                IslandOccupant currentOccupant =
-                        OccupantFactory.createOccupant(this.getLocation(), this.getType(), CreationType.NEWBORN);
+                OccupantFactory.createOccupant(this.getLocation(), this.getType(), CreationType.NEWBORN);
             }
         }
     }
-    // наверное стоит сделать так же, как в Animal и проверку делать за пределами метода
 
     /* сделать многопоточным?
         должен вызываться в пуле потоков? для того что бы быстро обрабатывать все

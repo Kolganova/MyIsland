@@ -11,6 +11,7 @@ public class Mouse extends Herbivorous {
         setIsPoisonProtected(true);
         setWeight(0.05);
         setBellySize(0.01);
+        setCurrentSatiety(getRandom().nextDouble(this.getBellySize().get()));
         setSatietyCostOnMove(getBellySize().get() / 5);
         setMaxAmountOfMoves(1);
         location.addOccupantInLocation(this);

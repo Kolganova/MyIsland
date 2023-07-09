@@ -20,14 +20,19 @@ public abstract class Omnivores extends Animal implements EatableAnimals, Eatabl
     @Override
     public synchronized boolean eat(IslandOccupant occupant) {
         if (occupant instanceof Plant) {
-            nutritionProcess(this, occupant);
+            if (this.isIsPoisonProtected()) {
+                nutritionProcess(this, occupant);
+            } else {
+                this.die();
+                occupant.die();
+            }
+            return true;
         } else if (occupant instanceof DeadAnimal && getRandom().nextBoolean()) {
-            eatDeadAnimal(this, (DeadAnimal) occupant);
+            return eatDeadAnimal(this, (DeadAnimal) occupant);
         } else {
             return eatAnimal((Animal) occupant);
         }
 
-        return true;
     }
 
     @Override

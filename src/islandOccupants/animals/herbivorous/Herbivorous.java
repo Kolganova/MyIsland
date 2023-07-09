@@ -15,7 +15,12 @@ public abstract class Herbivorous extends Animal {
     @Override
     public boolean eat(IslandOccupant occupant) {
         if (occupant instanceof Plant) {
-            this.nutritionProcess(this, occupant);
+            if (this.isIsPoisonProtected()) {
+                nutritionProcess(this, occupant);
+            } else {
+                this.die();
+                occupant.die();
+            }
             return true;
         }
 
