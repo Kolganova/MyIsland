@@ -49,13 +49,9 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable 
         boolean isApproved = false;
         Animal partner1 = occupant1.getId() > occupant2.getId() ? occupant1 : occupant2;
         Animal partner2 = occupant1.getId() > occupant2.getId() ? occupant2 : occupant1;
-        synchronized (partner1) {
-            synchronized (partner2) {
-                if ((partner1.isFemale && !(partner2.isFemale())) || (partner2.isFemale && !(partner1.isFemale()))) {
-                    if (partner1.isAbleToMultiply() && partner2.isAbleToMultiply()) {
-                        isApproved = true;
-                    }
-                }
+        if ((partner1.isFemale && !(partner2.isFemale())) || (partner2.isFemale && !(partner1.isFemale()))) {
+            if (partner1.isAbleToMultiply() && partner2.isAbleToMultiply()) {
+                isApproved = true;
             }
         }
 
@@ -73,19 +69,19 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable 
     }
 
     @Override
-    public void nutritionProcess(Animal animal, IslandOccupant occupant) {
+    public void nutritionProcess(IslandOccupant occupant) {
         double occupantWeight = occupant.getWeight().get();
-        double eaterCurrentSatiety = animal.getCurrentSatiety().get();
-        double eaterBellySize = animal.getBellySize().get();
+        double eaterCurrentSatiety = this.getCurrentSatiety().get();
+        double eaterBellySize = this.getBellySize().get();
         boolean willBellyFitOccupant = occupantWeight + eaterCurrentSatiety <= eaterBellySize;
         if (willBellyFitOccupant) {
-            animal.setCurrentSatiety(eaterCurrentSatiety + occupantWeight);
+            this.setCurrentSatiety(eaterCurrentSatiety + occupantWeight);
             occupant.die();
         } else {
-            animal.setCurrentSatiety(eaterBellySize);
+            this.setCurrentSatiety(eaterBellySize);
             if (occupant instanceof Animal) {
                 double deadAnimalWeight = occupantWeight - (eaterBellySize - eaterCurrentSatiety);
-                new DeadAnimal(animal.getLocation(), "deadAnimal", deadAnimalWeight);
+                new DeadAnimal(this.getLocation(), "deadAnimal", deadAnimalWeight);
             }
             occupant.die();
         }

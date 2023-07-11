@@ -4,7 +4,7 @@ import enums.DeadAnimalAging;
 import islandOccupants.animals.Animal;
 import islandOccupants.deadAnimals.DeadAnimal;
 
-public interface EatableDeadAnimals extends Eatable {
+public interface EatableDeadAnimal extends Eatable {
     default void eatDeadAnimal(Animal animal, DeadAnimal deadAnimal) {
         double deadAnimalWeight = deadAnimal.getWeight().get();
         double animalCurrentSatiety = animal.getCurrentSatiety().get();

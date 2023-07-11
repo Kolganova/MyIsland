@@ -39,11 +39,30 @@ public class Menu {
                     actLikePlant((Plant) occupant);
                 } else if (occupant instanceof Animal) {
                     int dice = occupant.getRandom().nextInt(100);
-                    if (dice <= 50 && i.get() != listOfOccupants.size()-1) {
-                        actLikeEatingAnimal((Animal) occupant, listOfOccupants.get(i.getAndIncrement()));
+                    if (dice <= 50) {
+                        int counter = 0;
+                        while (true) {
+                            int indexOfVictim = occupant.getRandom().nextInt(listOfOccupants.size());
+                            counter++;
+                            if (indexOfVictim != i.get()) {
+                                boolean didEat = actLikeEatingAnimal((Animal) occupant, listOfOccupants.get(indexOfVictim));
+                                if (didEat || counter > 4)
+                                    break;
+                            }
+                        }
                     }
-                    if (dice <= 75 && i.get() != listOfOccupants.size()-1) {
-                        actLikeMultipliableAnimal((Animal) occupant, (Animal) listOfOccupants.get(i.getAndIncrement()));
+                    if (dice <= 75 && i.get() != listOfOccupants.size() - 1) {
+                        int counter = 0;
+                        while (true) {
+                            int indexOfPartner = occupant.getRandom().nextInt(listOfOccupants.size());
+                            counter++;
+                            if (indexOfPartner != i.get()) {
+                                boolean didMultiply = actLikeMultipliableAnimal((Animal) occupant,
+                                        (Animal) listOfOccupants.get(i.getAndIncrement()));
+                                if (didMultiply || counter > 4)
+                                    break;
+                            }
+                        }
                     } else {
                         actLikeMovingAnimal((Animal) occupant, island.getListOfLocations());
                     }
@@ -68,8 +87,8 @@ public class Menu {
         plant.incrementAge();
     }
 
-    public static void actLikeEatingAnimal(Animal animal, IslandOccupant occupant) {
-        animal.eat(occupant);
+    public static boolean actLikeEatingAnimal(Animal animal, IslandOccupant occupant) {
+        boolean result = animal.eat(occupant);
         actLikeAnimal(animal);
         if (occupant instanceof Animal) {
             actLikeAnimal((Animal) occupant);
@@ -78,14 +97,19 @@ public class Menu {
         } else {
             actLikePlant((Plant) occupant);
         }
+
+        return result;
     }
 
-    public synchronized static void actLikeMultipliableAnimal(Animal partner1, Animal partner2) {
+    public synchronized static boolean actLikeMultipliableAnimal(Animal partner1, Animal partner2) {
+        boolean result = false;
         if (Animal.isCoupleAppropriate(partner1, partner2)) {
             partner1.multiply();
+            result = true;
         }
         actLikeAnimal(partner1);
-        actLikeAnimal(partner2);
+
+        return result;
     }
 
     public static void actLikeMovingAnimal(Animal animal,

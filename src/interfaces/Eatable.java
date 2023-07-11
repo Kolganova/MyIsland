@@ -1,10 +1,9 @@
 package interfaces;
 
 import islandOccupants.IslandOccupant;
-import islandOccupants.animals.Animal;
 
 public interface Eatable {
-    void eat(IslandOccupant occupant);
+    boolean eat(IslandOccupant occupant);
 
-    void nutritionProcess(Animal animal, IslandOccupant occupant);
+    void nutritionProcess(IslandOccupant occupant);
 }
