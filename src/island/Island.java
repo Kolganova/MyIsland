@@ -1,16 +1,23 @@
 package island;
 
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Island {
+    private final String name;
     private final int width;
     private final int length;
     private final CopyOnWriteArrayList<CopyOnWriteArrayList<Location>> listOfLocations
             = new CopyOnWriteArrayList<>();
 
-    public Island(int width, int length) {
+    private static final AtomicInteger amountOfAnimals = new AtomicInteger();
+    private static final AtomicInteger amountOfPlants = new AtomicInteger();
+    private static final AtomicInteger amountOfDeadAnimals = new AtomicInteger();
+
+    public Island(int width, int length, String name) {
         this.width = width;
         this.length = length;
+        this.name = name;
         setListOfLocations();
     }
 
@@ -54,4 +61,39 @@ public class Island {
         return listOfLocations;
     }
 
+    public static AtomicInteger getAmountOfAnimals() {
+        return amountOfAnimals;
+    }
+
+    public static AtomicInteger getAmountOfPlants() {
+        return amountOfPlants;
+    }
+
+    public static AtomicInteger getAmountOfDeadAnimals() {
+        return amountOfDeadAnimals;
+    }
+
+    public static void incrementAmountOfAnimals() {
+        amountOfAnimals.getAndIncrement();
+    }
+    public static void incrementAmountOfPlants() {
+        amountOfPlants.getAndIncrement();
+    }
+    public static void incrementAmountOfDeadAnimals() {
+        amountOfDeadAnimals.getAndIncrement();
+    }
+
+    public static void decrementAmountOfAnimals(){
+        amountOfAnimals.getAndDecrement();
+    }
+    public static void decrementAmountOfPlants(){
+        amountOfPlants.getAndDecrement();
+    }
+    public static void decrementAmountOfDeadAnimals(){
+        amountOfDeadAnimals.getAndDecrement();
+    }
+
+    public String getName() {
+        return name;
+    }
 }

@@ -14,7 +14,7 @@ public abstract class Herbivorous extends Animal implements EatablePlant {
     }
 
     @Override
-    public boolean eat(IslandOccupant occupant) {
+    public synchronized boolean eat(IslandOccupant occupant) {
         if (occupant instanceof Plant) {
             eatPlant(this, (Plant) occupant);
             return true;

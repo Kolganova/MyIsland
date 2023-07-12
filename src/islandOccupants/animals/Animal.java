@@ -3,11 +3,13 @@ package islandOccupants.animals;
 import enums.AnimalAging;
 import enums.CreationType;
 import interfaces.*;
+import island.Island;
 import island.Location;
 import islandOccupants.IslandOccupant;
 import islandOccupants.OccupantFactory;
 import islandOccupants.deadAnimals.DeadAnimal;
 
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class Animal extends IslandOccupant implements Movable, Eatable {
@@ -21,6 +23,7 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable 
 
     public Animal(Location location, String type, CreationType creationType) {
         super(location, type);
+        Island.incrementAmountOfAnimals();
         switch (creationType) {
             case NEWBORN -> setNewbornAnimal();
             case START_OCCUPANT -> setStartAnimal();
@@ -34,7 +37,7 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable 
 
     private void setStartAnimal() {
         isFemale = getRandom().nextBoolean();
-        setAge(getRandom().nextInt(300));
+        setAge(getRandom().nextInt(1, 300));
     }
 
     public boolean isAbleToMultiply() {
@@ -59,7 +62,10 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable 
     }
 
     public synchronized void multiply() {
-        OccupantFactory.createOccupant(this.getLocation(), this.getType(), CreationType.NEWBORN);
+        int amountOfChildren = getRandom().nextInt(10);
+        for (int i = 0; i < amountOfChildren; i++) {
+            OccupantFactory.createOccupant(this.getLocation(), this.getType(), CreationType.NEWBORN);
+        }
     }
 
     @Override
@@ -87,6 +93,48 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable 
         }
     }
 
+    public boolean actLikeEatingAnimal(IslandOccupant occupant) {
+
+        return this.eat(occupant);
+    }
+
+    public boolean actLikeMultipliableAnimal(Animal partner) {
+        boolean result = false;
+        if (Animal.isCoupleAppropriate(this, partner)) {
+            this.multiply();
+            result = true;
+        }
+
+        return result;
+    }
+
+    public void actLikeMovingAnimal(CopyOnWriteArrayList<CopyOnWriteArrayList<Location>> listOfLocations) {
+        Location animalLocation = this.getLocation();
+        if (moveCounter < maxAmountOfMoves) {
+            if (animalLocation.getIndexOfExternalList() <
+                    listOfLocations.get(animalLocation.getIndexOfExternalList()).size()) {
+                this.move(listOfLocations.get(animalLocation.getIndexOfExternalList()).
+                        get(animalLocation.getIndexOfInnerList() + 1));
+            } else {
+                this.move(listOfLocations.get(animalLocation.getIndexOfExternalList()).
+                        get(animalLocation.getIndexOfInnerList() - 1));
+            }
+            incrementMoveCounter();
+        }
+        actLikeAnimal();
+    }
+
+    public void actLikeAnimal() {
+        this.setCurrentSatiety(currentSatiety.get() - satietyCostOnMove);
+        if ((this.checkAgingPhase(AnimalAging.class) == AnimalAging.OLD) ||
+                currentSatiety.get() <= 0) {
+            if (getRandom().nextInt(100) <= 20) {
+                this.die();
+            }
+        }
+        incrementAge();
+    }
+
     public boolean isFemale() {
         return isFemale;
     }
@@ -97,10 +145,6 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable 
 
     public void setIsPoisonProtected(boolean isPoisonProtected) {
         this.isPoisonProtected = isPoisonProtected;
-    }
-
-    public int getMaxAmountOfMoves() {
-        return maxAmountOfMoves;
     }
 
     public void setMaxAmountOfMoves(int maxAmountOfMoves) {
@@ -115,10 +159,6 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable 
         this.bellySize.set(bellySize);
     }
 
-    public double getSatietyCostOnMove() {
-        return satietyCostOnMove;
-    }
-
     public void setSatietyCostOnMove(double satietyCostOnMove) {
         this.satietyCostOnMove = satietyCostOnMove;
     }
@@ -131,11 +171,12 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable 
         this.currentSatiety.set(currentSatiety);
     }
 
-    public int getMoveCounter() {
-        return moveCounter;
-    }
-
     public void incrementMoveCounter() {
         moveCounter++;
     }
+
+    public void setMoveCounter(int moveCounter) {
+        this.moveCounter = moveCounter;
+    }
+
 }

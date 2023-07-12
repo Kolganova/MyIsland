@@ -18,7 +18,7 @@ public abstract class Predator extends Animal implements EatableAnimal, EatableD
     }
 
     @Override
-    public boolean eat(IslandOccupant occupant) {
+    public synchronized boolean eat(IslandOccupant occupant) {
         if (occupant instanceof DeadAnimal && getRandom().nextBoolean()) {
             eatDeadAnimal(this, (DeadAnimal) occupant);
             return true;

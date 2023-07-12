@@ -1,7 +1,10 @@
 package islandOccupants;
 
 import enums.Aging;
+import island.Island;
 import island.Location;
+import islandOccupants.animals.Animal;
+import islandOccupants.plants.Plant;
 
 import java.util.Objects;
 import java.util.Random;
@@ -52,7 +55,14 @@ public abstract class IslandOccupant {
         this.age = age;
     }
 
-    public void die() {
+    public synchronized void die() {
+        if (this instanceof Animal) {
+            Island.decrementAmountOfAnimals();
+        }
+        else if (this instanceof Plant)
+            Island.decrementAmountOfPlants();
+        else
+            Island.decrementAmountOfDeadAnimals();
         location.decrementAmountOfOccupantsOnLocation(type);
         location.getListOfOccupants().remove(this);
     }

@@ -19,7 +19,7 @@ public abstract class Omnivores extends Animal implements EatableAnimal, Eatable
     }
 
     @Override
-    public boolean eat(IslandOccupant occupant) {
+    public synchronized boolean eat(IslandOccupant occupant) {
         if (occupant instanceof Plant) {
             eatPlant(this, (Plant) occupant);
             return true;

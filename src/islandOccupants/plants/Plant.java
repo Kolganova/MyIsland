@@ -2,6 +2,7 @@ package islandOccupants.plants;
 
 import enums.CreationType;
 import enums.PlantAging;
+import island.Island;
 import island.Location;
 import islandOccupants.IslandOccupant;
 import islandOccupants.OccupantFactory;
@@ -12,9 +13,10 @@ public abstract class Plant extends IslandOccupant {
 
     public Plant(Location location, String type, CreationType creationType) {
         super(location, type);
+        Island.incrementAmountOfPlants();
         switch (creationType) {
             case NEWBORN -> setAge(1);
-            case START_OCCUPANT -> setAge(getRandom().nextInt(40));
+            case START_OCCUPANT -> setAge(getRandom().nextInt(1, 40));
         }
     }
 
@@ -37,16 +39,15 @@ public abstract class Plant extends IslandOccupant {
         }
     }
 
-    /* сделать многопоточным?
-        должен вызываться в пуле потоков? для того что бы быстро обрабатывать все
-        растения на локации
-        в пуле "хода" можно просто понимать через instanceof что это за класс и исходя из этого
-        выполнять определенные методы, которые этот класс должен делать в каждом ходу
-        т.е. растение только распространяется и "стареет" (и мб меняет enums.PlantAging)
-         */
-
-    public int getPropagationFrequency() {
-        return propagationFrequency;
+    public void actLikePlant() {
+        if (this.isAbleToMultiply() && getRandom().nextInt(100) <= 80)
+            this.multiply();
+        if (this.checkAgingPhase(PlantAging.class) == PlantAging.FADING) {
+            if (getRandom().nextInt(100) <= 20) {
+                this.die();
+            }
+        }
+        this.incrementAge();
     }
 
     public void setPropagationFrequency(int propagationFrequency) {

@@ -1,5 +1,3 @@
-import enums.AnimalAging;
-import enums.PlantAging;
 import island.Island;
 import island.Location;
 import islandOccupants.IslandOccupant;
@@ -10,136 +8,125 @@ import islandOccupants.plants.Plant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Scanner;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Menu {
 
-    public static void createIsland() {
-        Island myIsland = new Island(2, 10);
+    public static void playInSimulation(Island island) {
+        System.out.println("Добрый день!\nВы открыли симуляцию очень реалистичного острова \"" + island.getName() +
+                "\".\nВводите \"play\" для того, что бы наш островок прожил свой очередной жалкий цикл (10 дней) " +
+                "или введите \"stop\" для уничтожения несчастного островка.\nЕсли все животные умрут, " +
+                "то симуляция так же закончится.");
+        Scanner sc = new Scanner(System.in);
+        while (true) {
+            String command = sc.nextLine();
+            if ("play".equals(command)) {
+                live10DaysAtIsland(island);
+                if (isThereNoAliveAnimal()) {
+                    System.out.println("______________________________");
+                    System.out.println("Эх, все животные умерли :(");
+                    break;
+                }
+                showStatistic();
+                        // мб сделать остров Singleton
+            } else if ("stop".equals(command)) {
+                break;
+            }
+        }
+        sc.close();
     }
 
-    public void liveADayAtIsland(Island island) {
-
+    private static void showStatistic() {
+        System.out.println("______________________________");
+        System.out.println("Текущее количество животных на островке " + Island.getAmountOfAnimals());
+        System.out.println("Текущее количество мертвых животных (мяса) на островке " + Island.getAmountOfDeadAnimals());
+        System.out.println("Текущее количество растений на островке " + Island.getAmountOfPlants());
+        // мб добавить более детализированную статистику если будет время
     }
 
-    public static void liveADayAtLocation(CopyOnWriteArrayList<IslandOccupant> listOfOccupants, Island island) {
+    private static void live10DaysAtIsland(Island island) {
+        for (CopyOnWriteArrayList<Location> list : island.getListOfLocations()) {
+            for (Location location : list) {
+                live10DaysAtLocation(location.getListOfOccupants(), island);
+            }
+        }
+    }
+
+    private static void live10DaysAtLocation(CopyOnWriteArrayList<IslandOccupant> listOfOccupants, Island island) {
+        for (int i = 0; i < 10; i++) {
+            liveADayAtLocation(listOfOccupants, island);
+        }
+        listOfOccupants.parallelStream()
+                .filter(occupant -> occupant instanceof Animal)
+                .map(occupant -> (Animal) occupant)
+                .forEach(animal -> animal.setMoveCounter(0));
+    }
+
+
+    private static void liveADayAtLocation(CopyOnWriteArrayList<IslandOccupant> listOfOccupants, Island island) {
+
         List<IslandOccupant> temp = new ArrayList<>(listOfOccupants);
         Collections.shuffle(temp);
         listOfOccupants.clear();
         listOfOccupants.addAll(temp);
 
-        ExecutorService executor = Executors.newFixedThreadPool(25);
+        ExecutorService executor = Executors.newFixedThreadPool(50);
         CompletionService<Void> completionService = new ExecutorCompletionService<>(executor);
         for (AtomicInteger i = new AtomicInteger(); i.get() <= listOfOccupants.size(); i.getAndIncrement()) {
-            int finalI = i.get();
             completionService.submit(() -> {
-                IslandOccupant occupant = listOfOccupants.get(finalI);
-                if (occupant instanceof Plant) {
-                    actLikePlant((Plant) occupant);
-                } else if (occupant instanceof Animal) {
-                    int dice = occupant.getRandom().nextInt(100);
-                    if (dice <= 50) {
-                        int counter = 0;
-                        while (true) {
-                            int indexOfVictim = occupant.getRandom().nextInt(listOfOccupants.size());
-                            counter++;
-                            if (indexOfVictim != i.get()) {
-                                boolean didEat = actLikeEatingAnimal((Animal) occupant, listOfOccupants.get(indexOfVictim));
-                                if (didEat || counter > 4)
-                                    break;
+                IslandOccupant occupant = listOfOccupants.get(i.get());
+//                synchronized (occupant) {
+                    if (occupant instanceof Plant) {
+                        ((Plant) occupant).actLikePlant();
+                    } else if (occupant instanceof Animal) {
+                        int dice = occupant.getRandom().nextInt(100);
+                        if (dice <= 40) {
+                            int counter = 0;
+                            while (true) {
+                                int indexOfVictim = occupant.getRandom().nextInt(listOfOccupants.size());
+                                if (indexOfVictim != i.get()) {
+                                    boolean didEat = ((Animal) occupant).actLikeEatingAnimal(listOfOccupants.get(indexOfVictim));
+                                    if (didEat || counter > 4)
+                                        break;
+                                }
+                                counter++;
                             }
-                        }
-                    }
-                    if (dice <= 75 && i.get() != listOfOccupants.size() - 1) {
-                        int counter = 0;
-                        while (true) {
-                            int indexOfPartner = occupant.getRandom().nextInt(listOfOccupants.size());
-                            counter++;
-                            if (indexOfPartner != i.get()) {
-                                boolean didMultiply = actLikeMultipliableAnimal((Animal) occupant,
-                                        (Animal) listOfOccupants.get(i.getAndIncrement()));
-                                if (didMultiply || counter > 4)
+                            ((Animal) occupant).actLikeAnimal();
+                        } else if (dice <= 75) {
+                            int counter = 0;
+                            while (true) {
+                                int indexOfPartner;
+                                do {
+                                    indexOfPartner = occupant.getRandom().nextInt(listOfOccupants.size());
+                                } while (indexOfPartner == i.get());
+                                boolean didMultiply = ((Animal) occupant).actLikeMultipliableAnimal(
+                                        (Animal) listOfOccupants.get(indexOfPartner));
+                                if (didMultiply || counter > 9)
                                     break;
+                                counter++;
                             }
+                            ((Animal) occupant).actLikeAnimal();
+                        } else {
+                            ((Animal) occupant).actLikeMovingAnimal(island.getListOfLocations());
                         }
                     } else {
-                        actLikeMovingAnimal((Animal) occupant, island.getListOfLocations());
+                        ((DeadAnimal) occupant).actLikeDeadAnimal();
                     }
-                } else {
-                    actLikeDeadAnimal((DeadAnimal) occupant);
-                }
+//                }
 
                 return null;
             });
         }
 
+        executor.shutdown();
+
     }
 
-    public static void actLikePlant(Plant plant) {
-        if (plant.isAbleToMultiply())
-            plant.multiply();
-        if (plant.checkAgingPhase(PlantAging.class) == PlantAging.FADING) {
-            if (plant.getRandom().nextInt(100) <= 20) {
-                plant.die();
-            }
-        }
-        plant.incrementAge();
-    }
+    private static boolean isThereNoAliveAnimal() {
 
-    public static boolean actLikeEatingAnimal(Animal animal, IslandOccupant occupant) {
-        boolean result = animal.eat(occupant);
-        actLikeAnimal(animal);
-        if (occupant instanceof Animal) {
-            actLikeAnimal((Animal) occupant);
-        } else if (occupant instanceof DeadAnimal) {
-            actLikeDeadAnimal((DeadAnimal) occupant);
-        } else {
-            actLikePlant((Plant) occupant);
-        }
-
-        return result;
-    }
-
-    public synchronized static boolean actLikeMultipliableAnimal(Animal partner1, Animal partner2) {
-        boolean result = false;
-        if (Animal.isCoupleAppropriate(partner1, partner2)) {
-            partner1.multiply();
-            result = true;
-        }
-        actLikeAnimal(partner1);
-
-        return result;
-    }
-
-    public static void actLikeMovingAnimal(Animal animal,
-                                           CopyOnWriteArrayList<CopyOnWriteArrayList<Location>> listOfLocations) {
-        Location animalLocation = animal.getLocation();
-        if (animal.getMoveCounter() < animal.getMaxAmountOfMoves()) {
-            if (animalLocation.getIndexOfExternalList() <
-                    listOfLocations.get(animalLocation.getIndexOfExternalList()).size()) {
-                animal.move(listOfLocations.get(animalLocation.getIndexOfExternalList()).get(animalLocation.getIndexOfInnerList() + 1));
-            } else {
-                animal.move(listOfLocations.get(animalLocation.getIndexOfExternalList()).get(animalLocation.getIndexOfInnerList() - 1));
-            }
-            animal.incrementMoveCounter();
-        }
-        actLikeAnimal(animal);
-    }
-
-    public static void actLikeAnimal(Animal animal) {
-        animal.setCurrentSatiety(animal.getCurrentSatiety().get() - animal.getSatietyCostOnMove());
-        if ((animal.checkAgingPhase(AnimalAging.class) == AnimalAging.OLD) ||
-                animal.getCurrentSatiety().get() <= 0) {
-            if (animal.getRandom().nextInt(100) <= 20) {
-                animal.die();
-            }
-        }
-        animal.incrementAge();
-    }
-
-    public static void actLikeDeadAnimal(DeadAnimal deadAnimal) {
-        deadAnimal.incrementAge();
+        return Island.getAmountOfAnimals().get() <= 0;
     }
 
 }
