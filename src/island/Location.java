@@ -3,10 +3,7 @@ package island;
 import enums.CreationType;
 import islandOccupants.IslandOccupant;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -20,11 +17,7 @@ public class Location {
     private int indexOfExternalList;
 
     public Location() {
-        setMapWithOccupantsOnLocation();
-    }
-
-    public CopyOnWriteArrayList<IslandOccupant> getListOfOccupants() {
-        return listOfOccupants;
+        primarySettingMapWithOccupantsOnLocation();
     }
 
     public synchronized boolean addOccupantInLocation(IslandOccupant occupant) {
@@ -40,23 +33,19 @@ public class Location {
         return false;
     }
 
-    protected synchronized void startAnimalAmountCreator() { // название мб поменять
+    protected synchronized void primaryAnimalsCreator() {
         for (String type : this.getMapWithOccupantsOnLocation().keySet()) {
             if ("deadAnimal".equals(type))
                 continue;
             IslandOccupant occupant = createOccupant(this, type, CreationType.START_OCCUPANT);
-            int max = (occupant.getMaxAmountOfOccupants() / 2 - 1);
+            int max = (Objects.requireNonNull(occupant).getMaxAmountOfOccupants() / 2 - 1);
             for (int i = 0; i < max; i++) {
                 createOccupant(this, type, CreationType.START_OCCUPANT);
             }
         }
     }
 
-    public ConcurrentHashMap<String, AtomicInteger> getMapWithOccupantsOnLocation() {
-        return mapWithOccupantsOnLocation;
-    }
-
-    private void setMapWithOccupantsOnLocation() {
+    private void primarySettingMapWithOccupantsOnLocation() {
 
         List<String> listOfOccupantsType = new ArrayList<>(List.of("wolf", "boa", "fox", "bear", "eagle", "horse",
                 "deer", "rabbit", "mouse", "goat", "sheep", "boar", "buffalo", "duck", "caterpillar", "flower",
@@ -87,6 +76,11 @@ public class Location {
         });
     }
 
+
+    public ConcurrentHashMap<String, AtomicInteger> getMapWithOccupantsOnLocation() {
+        return mapWithOccupantsOnLocation;
+    }
+
     public int getIndexOfInnerList() {
         return indexOfInnerList;
     }
@@ -102,4 +96,10 @@ public class Location {
     public void setIndexOfExternalList(int indexOfExternalList) {
         this.indexOfExternalList = indexOfExternalList;
     }
+
+    public CopyOnWriteArrayList<IslandOccupant> getListOfOccupants() {
+        return listOfOccupants;
+    }
+
+
 }

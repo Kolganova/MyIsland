@@ -14,29 +14,31 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Menu {
 
-    public static void playInSimulation(Island island) {
-        System.out.println("Добрый день!\nВы открыли симуляцию очень реалистичного острова \"" + island.getName() +
+    public static void playInSimulation() {
+        System.out.println("Добрый день!\nВы открыли симуляцию очень реалистичного острова \"" + Island.getIsland().getName() +
                 "\".\nВводите \"play\" для того, что бы наш островок прожил свой очередной жалкий цикл (10 дней) " +
                 "или введите \"stop\" для уничтожения несчастного островка.\nЕсли все животные умрут, " +
                 "то симуляция так же закончится.");
         Scanner sc = new Scanner(System.in);
+
+        System.out.println("\nТекущая статистика:");
+        showStatistic();
+
         while (true) {
             String command = sc.nextLine();
             if ("play".equals(command)) {
-                live10DaysAtIsland(island);
+                live10DaysAtIsland();
                 if (isThereNoAliveAnimal()) {
                     System.out.println("______________________________");
                     System.out.println("Эх, все животные умерли :(");
                     break;
                 }
                 showStatistic();
-                        // мб сделать остров Singleton
             } else if ("stop".equals(command)) {
                 break;
             }
         }
         sc.close();
-        // почему сразу появляются мертвые животные?
     }
 
     private static void showStatistic() {
@@ -47,33 +49,32 @@ public class Menu {
         // мб добавить более детализированную статистику если будет время
     }
 
-    private static void live10DaysAtIsland(Island island) {
-        for (CopyOnWriteArrayList<Location> list : island.getListOfLocations()) {
-            for (Location location : list) {
-                live10DaysAtLocation(location.getListOfOccupants(), island);
-            }
+    private static void live10DaysAtIsland() {
+        for (CopyOnWriteArrayList<Location> list : Island.getIsland().getListOfLocations()) {
+            list.forEach(e -> live10DaysAtLocation(e.getListOfOccupants()));
+            System.out.println("Происходят процессы жизнедеятельности...");
         }
     }
 
-    private static void live10DaysAtLocation(CopyOnWriteArrayList<IslandOccupant> listOfOccupants, Island island) {
+    private static void live10DaysAtLocation(CopyOnWriteArrayList<IslandOccupant> listOfOccupants) {
         for (int i = 0; i < 10; i++) {
-            liveADayAtLocation(listOfOccupants, island);
+            liveADayAtLocation(listOfOccupants);
         }
-        listOfOccupants.parallelStream()
+        listOfOccupants.stream()
                 .filter(occupant -> occupant instanceof Animal)
                 .map(occupant -> (Animal) occupant)
                 .forEach(animal -> animal.setMoveCounter(0));
     }
 
 
-    private static void liveADayAtLocation(CopyOnWriteArrayList<IslandOccupant> listOfOccupants, Island island) {
+    private static void liveADayAtLocation(CopyOnWriteArrayList<IslandOccupant> listOfOccupants) {
 
         List<IslandOccupant> temp = new ArrayList<>(listOfOccupants);
         Collections.shuffle(temp);
         listOfOccupants.clear();
         listOfOccupants.addAll(temp);
 
-        ExecutorService executor = Executors.newFixedThreadPool(50);
+        ExecutorService executor = Executors.newFixedThreadPool(10);
         CompletionService<Void> completionService = new ExecutorCompletionService<>(executor);
         for (AtomicInteger i = new AtomicInteger(); i.get() <= listOfOccupants.size(); i.getAndIncrement()) {
             completionService.submit(() -> {
@@ -110,7 +111,7 @@ public class Menu {
                             }
                             ((Animal) occupant).actLikeAnimal();
                         } else {
-                            ((Animal) occupant).actLikeMovingAnimal(island.getListOfLocations());
+                            ((Animal) occupant).actLikeMovingAnimal(Island.getIsland().getListOfLocations());
                         }
                     } else {
                         ((DeadAnimal) occupant).actLikeDeadAnimal();

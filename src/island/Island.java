@@ -4,6 +4,7 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Island {
+    private static Island ISLAND;
     private final String name;
     private final int width;
     private final int length;
@@ -14,7 +15,7 @@ public class Island {
     private static final AtomicInteger amountOfPlants = new AtomicInteger();
     private static final AtomicInteger amountOfDeadAnimals = new AtomicInteger();
 
-    public Island(int width, int length, String name) {
+    private Island(int width, int length, String name) {
         this.width = width;
         this.length = length;
         this.name = name;
@@ -40,7 +41,7 @@ public class Island {
                 location.setIndexOfExternalList(index);
                 location.setIndexOfInnerList(finalI);
                 list.add(location);
-                location.startAnimalAmountCreator();
+                location.primaryAnimalsCreator();
                 return null;
             });
         }
@@ -95,5 +96,13 @@ public class Island {
 
     public String getName() {
         return name;
+    }
+
+    public static Island getIsland() {
+        if (ISLAND == null) {
+            ISLAND = new Island(10, 50, "DangerousIsland");
+        }
+
+        return ISLAND;
     }
 }
