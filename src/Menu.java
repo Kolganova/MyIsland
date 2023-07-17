@@ -36,6 +36,7 @@ public class Menu {
             }
         }
         sc.close();
+        // почему сразу появляются мертвые животные?
     }
 
     private static void showStatistic() {
