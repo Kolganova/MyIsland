@@ -80,38 +80,38 @@ public class Menu {
             completionService.submit(() -> {
                 IslandOccupant occupant = listOfOccupants.get(i.get());
 //                synchronized (occupant) {
-                    if (occupant instanceof Plant) {
-                        ((Plant) occupant).actLikePlant();
-                    } else if (occupant instanceof Animal) {
+                    if (occupant instanceof Plant plant) {
+                        plant.actLikePlant();
+                    } else if (occupant instanceof Animal animal) {
                         int dice = occupant.getRandom().nextInt(100);
                         if (dice <= 40) {
                             int counter = 0;
                             while (true) {
-                                int indexOfVictim = occupant.getRandom().nextInt(listOfOccupants.size());
+                                int indexOfVictim = animal.getRandom().nextInt(listOfOccupants.size());
                                 if (indexOfVictim != i.get()) {
-                                    boolean didEat = ((Animal) occupant).actLikeEatingAnimal(listOfOccupants.get(indexOfVictim));
+                                    boolean didEat = animal.actLikeEatingAnimal(listOfOccupants.get(indexOfVictim));
                                     if (didEat || counter > 4)
                                         break;
                                 }
                                 counter++;
                             }
-                            ((Animal) occupant).actLikeAnimal();
+                            animal.actLikeAnimal();
                         } else if (dice <= 75) {
                             int counter = 0;
                             while (true) {
                                 int indexOfPartner;
                                 do {
-                                    indexOfPartner = occupant.getRandom().nextInt(listOfOccupants.size());
+                                    indexOfPartner = animal.getRandom().nextInt(listOfOccupants.size());
                                 } while (indexOfPartner == i.get());
-                                boolean didMultiply = ((Animal) occupant).actLikeMultipliableAnimal(
+                                boolean didMultiply = animal.actLikeMultipliableAnimal(
                                         (Animal) listOfOccupants.get(indexOfPartner));
                                 if (didMultiply || counter > 9)
                                     break;
                                 counter++;
                             }
-                            ((Animal) occupant).actLikeAnimal();
+                            animal.actLikeAnimal();
                         } else {
-                            ((Animal) occupant).actLikeMovingAnimal(Island.getIsland().getListOfLocations());
+                            animal.actLikeMovingAnimal(Island.getIsland().getListOfLocations());
                         }
                     } else {
                         ((DeadAnimal) occupant).actLikeDeadAnimal();

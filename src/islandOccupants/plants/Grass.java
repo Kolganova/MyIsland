@@ -10,7 +10,7 @@ public class Grass extends Plant {
         setMaxAmountOfOccupants(400);
         setIsPoisonous(false);
         setWeight(1.0);
-        setPropagationFrequency(4);
+        setPropagationFrequency(3);
         location.addOccupantInLocation(this);
     }
 }

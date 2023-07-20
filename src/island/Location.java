@@ -47,18 +47,14 @@ public class Location {
 
     private void primarySettingMapWithOccupantsOnLocation() {
 
-        List<String> listOfOccupantsType = new ArrayList<>(List.of("wolf", "boa", "fox", "bear", "eagle", "horse",
-                "deer", "rabbit", "mouse", "goat", "sheep", "boar", "buffalo", "duck", "caterpillar", "flower",
-                "poisonFlower", "bush", "grass", "deadAnimal"));
+        List<String> listOfOccupantsType = new ArrayList<>(List.of("wolf", "boa", "fox", "bear",
+                "eagle", "horse", "deer", "rabbit", "mouse", "goat", "sheep", "boar", "buffalo", "duck",
+                "caterpillar", "flower", "poisonFlower", "bush", "grass", "deadAnimal"));
 
-        List<AtomicInteger> amountOfOccupants = new ArrayList<>();
-        for (int i = 0; i < listOfOccupantsType.size(); i++) {
-            amountOfOccupants.add(new AtomicInteger());
-        }
+        HashMap<String, AtomicInteger> map = listOfOccupantsType
+                .stream()
+                .collect(HashMap::new, (k, v) -> k.put(v, new AtomicInteger()), Map::putAll);
 
-        HashMap<String, AtomicInteger> map = listOfOccupantsType.stream().collect(HashMap::new, (k, v) ->
-                        k.put(v, amountOfOccupants.get(listOfOccupantsType.indexOf(v))),
-                Map::putAll);
         mapWithOccupantsOnLocation.putAll(map);
     }
 

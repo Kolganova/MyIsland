@@ -30,7 +30,7 @@ public class Island {
         }
     }
 
-        private void setLocationToList(CopyOnWriteArrayList<Location> list, int index) {
+    private void setLocationToList(CopyOnWriteArrayList<Location> list, int index) {
         ExecutorService executor = Executors.newFixedThreadPool(10);
         CompletionService<Void> completionService = new ExecutorCompletionService<>(executor);
 
@@ -77,20 +77,24 @@ public class Island {
     public static void incrementAmountOfAnimals() {
         amountOfAnimals.getAndIncrement();
     }
+
     public static void incrementAmountOfPlants() {
         amountOfPlants.getAndIncrement();
     }
+
     public static void incrementAmountOfDeadAnimals() {
         amountOfDeadAnimals.getAndIncrement();
     }
 
-    public static void decrementAmountOfAnimals(){
+    public static void decrementAmountOfAnimals() {
         amountOfAnimals.getAndDecrement();
     }
-    public static void decrementAmountOfPlants(){
+
+    public static void decrementAmountOfPlants() {
         amountOfPlants.getAndDecrement();
     }
-    public static void decrementAmountOfDeadAnimals(){
+
+    public static void decrementAmountOfDeadAnimals() {
         amountOfDeadAnimals.getAndDecrement();
     }
 
@@ -100,7 +104,7 @@ public class Island {
 
     public static Island getIsland() {
         if (ISLAND == null) {
-            ISLAND = new Island(10, 50, "DangerousIsland");
+            ISLAND = new Island(10, 10, "DangerousIsland");
         }
 
         return ISLAND;

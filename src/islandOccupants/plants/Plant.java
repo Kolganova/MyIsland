@@ -40,10 +40,10 @@ public abstract class Plant extends IslandOccupant {
     }
 
     public void actLikePlant() {
-        if (this.isAbleToMultiply() && getRandom().nextInt(100) <= 80)
+        if (this.isAbleToMultiply() && getRandom().nextInt(100) <= 50)
             this.multiply();
         if (this.checkAgingPhase(PlantAging.class) == PlantAging.FADING) {
-            if (getRandom().nextInt(100) <= 20) {
+            if (getRandom().nextInt(100) <= 30) {
                 this.die();
             }
         }
