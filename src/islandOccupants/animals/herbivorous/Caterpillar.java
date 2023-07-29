@@ -10,7 +10,7 @@ public class Caterpillar extends Herbivorous {
         setMaxAmountOfOccupants(1000);
         setIsPoisonProtected(true);
         setWeight(0.01);
-        setBellySize(0.1); // ?????
+        setBellySize(0.1);
         setCurrentSatiety(getRandom().nextDouble(this.getBellySize().get()));
         setSatietyCostOnMove(getBellySize().get() / 5);
         setMaxAmountOfMoves(0);

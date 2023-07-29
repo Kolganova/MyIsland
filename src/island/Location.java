@@ -72,7 +72,6 @@ public class Location {
         });
     }
 
-
     public ConcurrentHashMap<String, AtomicInteger> getMapWithOccupantsOnLocation() {
         return mapWithOccupantsOnLocation;
     }

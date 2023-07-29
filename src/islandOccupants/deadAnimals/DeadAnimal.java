@@ -1,7 +1,6 @@
 package islandOccupants.deadAnimals;
 
 import enums.DeadAnimalAging;
-import island.Island;
 import island.Location;
 import islandOccupants.IslandOccupant;
 
@@ -9,7 +8,6 @@ public class DeadAnimal extends IslandOccupant {
 
     public DeadAnimal(Location location, String type, double weight) {
         super(location, type);
-        Island.incrementAmountOfDeadAnimals();
         setAge(1);
         setWeight(weight);
         setMaxAmountOfOccupants(100);

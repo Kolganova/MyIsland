@@ -15,14 +15,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Menu {
 
     public static void playInSimulation() {
-        System.out.println("Добрый день!\nВы открыли симуляцию очень реалистичного острова \"" + Island.getIsland().getName() +
-                "\".\nВводите \"play\" для того, что бы наш островок прожил свой очередной жалкий цикл (10 дней) " +
-                "или введите \"stop\" для уничтожения несчастного островка.\nЕсли все животные умрут, " +
-                "то симуляция так же закончится.");
+        printIntroduction();
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("\nТекущая статистика:");
-        showStatistic();
+        System.out.println("\nПервичная статистика:");
+        Statistics.showStatistics();
 
         while (true) {
             String command = sc.nextLine();
@@ -33,7 +30,7 @@ public class Menu {
                     System.out.println("Эх, все животные умерли :(");
                     break;
                 }
-                showStatistic();
+                Statistics.showStatistics();
             } else if ("stop".equals(command)) {
                 break;
             }
@@ -41,18 +38,9 @@ public class Menu {
         sc.close();
     }
 
-    private static void showStatistic() {
-        System.out.println("______________________________");
-        System.out.println("Текущее количество животных на островке " + Island.getAmountOfAnimals());
-        System.out.println("Текущее количество мертвых животных (мяса) на островке " + Island.getAmountOfDeadAnimals());
-        System.out.println("Текущее количество растений на островке " + Island.getAmountOfPlants());
-        // мб добавить более детализированную статистику если будет время
-    }
-
     private static void live10DaysAtIsland() {
         for (CopyOnWriteArrayList<Location> list : Island.getIsland().getListOfLocations()) {
             list.forEach(e -> live10DaysAtLocation(e.getListOfOccupants()));
-            System.out.println("Происходят процессы жизнедеятельности...");
         }
     }
 
@@ -66,7 +54,6 @@ public class Menu {
                 .forEach(animal -> animal.setMoveCounter(0));
     }
 
-
     private static void liveADayAtLocation(CopyOnWriteArrayList<IslandOccupant> listOfOccupants) {
 
         List<IslandOccupant> temp = new ArrayList<>(listOfOccupants);
@@ -79,44 +66,42 @@ public class Menu {
         for (AtomicInteger i = new AtomicInteger(); i.get() <= listOfOccupants.size(); i.getAndIncrement()) {
             completionService.submit(() -> {
                 IslandOccupant occupant = listOfOccupants.get(i.get());
-//                synchronized (occupant) {
-                    if (occupant instanceof Plant plant) {
-                        plant.actLikePlant();
-                    } else if (occupant instanceof Animal animal) {
-                        int dice = occupant.getRandom().nextInt(100);
-                        if (dice <= 40) {
-                            int counter = 0;
-                            while (true) {
-                                int indexOfVictim = animal.getRandom().nextInt(listOfOccupants.size());
-                                if (indexOfVictim != i.get()) {
-                                    boolean didEat = animal.actLikeEatingAnimal(listOfOccupants.get(indexOfVictim));
-                                    if (didEat || counter > 4)
-                                        break;
-                                }
-                                counter++;
-                            }
-                            animal.actLikeAnimal();
-                        } else if (dice <= 75) {
-                            int counter = 0;
-                            while (true) {
-                                int indexOfPartner;
-                                do {
-                                    indexOfPartner = animal.getRandom().nextInt(listOfOccupants.size());
-                                } while (indexOfPartner == i.get());
-                                boolean didMultiply = animal.actLikeMultipliableAnimal(
-                                        (Animal) listOfOccupants.get(indexOfPartner));
-                                if (didMultiply || counter > 9)
+                if (occupant instanceof Plant plant) {
+                    plant.actLikePlant();
+                } else if (occupant instanceof Animal animal) {
+                    int dice = occupant.getRandom().nextInt(100);
+                    if (dice <= 40) {
+                        int counter = 0;
+                        while (true) {
+                            int indexOfVictim = animal.getRandom().nextInt(listOfOccupants.size());
+                            if (indexOfVictim != i.get()) {
+                                boolean didEat = animal.actLikeEatingAnimal(listOfOccupants.get(indexOfVictim));
+                                if (didEat || counter > 4)
                                     break;
-                                counter++;
                             }
-                            animal.actLikeAnimal();
-                        } else {
-                            animal.actLikeMovingAnimal(Island.getIsland().getListOfLocations());
+                            counter++;
                         }
+                        animal.actLikeAnimal();
+                    } else if (dice <= 75) {
+                        int counter = 0;
+                        while (true) {
+                            int indexOfPartner;
+                            do {
+                                indexOfPartner = animal.getRandom().nextInt(listOfOccupants.size());
+                            } while (indexOfPartner == i.get());
+                            boolean didMultiply = animal.actLikeMultipliableAnimal(
+                                    (Animal) listOfOccupants.get(indexOfPartner));
+                            if (didMultiply || counter > 9)
+                                break;
+                            counter++;
+                        }
+                        animal.actLikeAnimal();
                     } else {
-                        ((DeadAnimal) occupant).actLikeDeadAnimal();
+                        animal.actLikeMovingAnimal(Island.getIsland().getListOfLocations());
                     }
-//                }
+                } else {
+                    ((DeadAnimal) occupant).actLikeDeadAnimal();
+                }
 
                 return null;
             });
@@ -128,7 +113,14 @@ public class Menu {
 
     private static boolean isThereNoAliveAnimal() {
 
-        return Island.getAmountOfAnimals().get() <= 0;
+        return Statistics.getAmountOfAnimals() <= 0;
+    }
+
+    private static void printIntroduction() {
+        System.out.println("Добрый день!\nВы открыли симуляцию очень реалистичного острова \"" +
+                Island.getIsland().getName() + "\".\nВводите \"play\" для того, что бы наш островок прожил свой" +
+                "очередной жалкий цикл (10 дней) или введите \"stop\" для уничтожения несчастного островка.\n" +
+                "Если все животные умрут, то симуляция так же закончится.");
     }
 
 }

@@ -2,7 +2,6 @@ package islandOccupants.plants;
 
 import enums.CreationType;
 import enums.PlantAging;
-import island.Island;
 import island.Location;
 import islandOccupants.IslandOccupant;
 import islandOccupants.OccupantFactory;
@@ -13,7 +12,6 @@ public abstract class Plant extends IslandOccupant {
 
     public Plant(Location location, String type, CreationType creationType) {
         super(location, type);
-        Island.incrementAmountOfPlants();
         switch (creationType) {
             case NEWBORN -> setAge(1);
             case START_OCCUPANT -> setAge(getRandom().nextInt(1, 40));

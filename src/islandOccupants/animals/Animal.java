@@ -3,7 +3,6 @@ package islandOccupants.animals;
 import enums.AnimalAging;
 import enums.CreationType;
 import interfaces.*;
-import island.Island;
 import island.Location;
 import islandOccupants.IslandOccupant;
 import islandOccupants.OccupantFactory;
@@ -23,7 +22,7 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable 
 
     public Animal(Location location, String type, CreationType creationType) {
         super(location, type);
-        Island.incrementAmountOfAnimals();
+//        Island.incrementAmountOfAnimals();
         switch (creationType) {
             case NEWBORN -> setNewbornAnimal();
             case START_OCCUPANT -> setStartAnimal();
@@ -62,7 +61,7 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable 
     }
 
     public synchronized void multiply() {
-        int amountOfChildren = getRandom().nextInt(10);
+        int amountOfChildren = getRandom().nextInt(6);
         for (int i = 0; i < amountOfChildren; i++) {
             OccupantFactory.createOccupant(this.getLocation(), this.getType(), CreationType.NEWBORN);
         }
