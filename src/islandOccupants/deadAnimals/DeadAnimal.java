@@ -1,6 +1,6 @@
 package islandOccupants.deadAnimals;
 
-import enums.DeadAnimalAging;
+import enums.aging.DeadAnimalAging;
 import island.Location;
 import islandOccupants.IslandOccupant;
 

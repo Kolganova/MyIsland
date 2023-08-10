@@ -27,6 +27,20 @@ public class Island {
 
     private void setLocationToList(CopyOnWriteArrayList<Location> list, int index) {
         ExecutorService executor = Executors.newFixedThreadPool(10);
+        CompletionService<Void> completionService = getVoidCompletionService(list, index, executor);
+
+        try {
+            for (int i = 0; i < length; i++) {
+                completionService.take().get();
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        executor.shutdown();
+    }
+
+    private CompletionService<Void> getVoidCompletionService(CopyOnWriteArrayList<Location> list, int index, ExecutorService executor) {
         CompletionService<Void> completionService = new ExecutorCompletionService<>(executor);
 
         for (int i = 0; i < length; i++) {
@@ -40,16 +54,7 @@ public class Island {
                 return null;
             });
         }
-
-        try {
-            for (int i = 0; i < length; i++) {
-                completionService.take().get();
-            }
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-
-        executor.shutdown();
+        return completionService;
     }
 
 

@@ -1,13 +1,14 @@
-package enums;
+package enums.aging;
 
-public enum AnimalAging implements Aging {
-    KID(1, 49),
-    YOUNG(50, 249),
-    OLD(250, 320);
+import enums.aging.Aging;
+
+public enum DeadAnimalAging implements Aging {
+    FRESH(1, 19),
+    NOT_FRESH(20, 50);
     private final int min;
     private final int max;
 
-    AnimalAging(int min, int max) {
+    DeadAnimalAging(int min, int max) {
         this.min = min;
         this.max = max;
     }

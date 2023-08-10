@@ -1,6 +1,6 @@
 package islandOccupants;
 
-import enums.Aging;
+import enums.aging.Aging;
 import island.Location;
 
 import java.util.Objects;

@@ -1,6 +1,6 @@
 package interfaces;
 
-import enums.DeadAnimalAging;
+import enums.aging.DeadAnimalAging;
 import islandOccupants.animals.Animal;
 import islandOccupants.deadAnimals.DeadAnimal;
 

@@ -1,7 +1,7 @@
 package islandOccupants.plants;
 
 import enums.CreationType;
-import enums.PlantAging;
+import enums.aging.PlantAging;
 import island.Location;
 import islandOccupants.IslandOccupant;
 import islandOccupants.OccupantFactory;
