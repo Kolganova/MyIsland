@@ -1,23 +1,23 @@
 package islandOccupants;
 
+import enums.OccupantType;
 import enums.aging.Aging;
 import island.Location;
 
 import java.util.Objects;
 import java.util.Random;
-import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class IslandOccupant {
     private int maxAmountOfOccupants;
-    private final AtomicReference<Double> weight = new AtomicReference<>();
-    private final String type;
+    private Double weight;
+    private final OccupantType type;
     private int age;
     private final int id;
     Location location;
 
     Random random = new Random();
 
-    public IslandOccupant(Location location, String type) {
+    public IslandOccupant(Location location, OccupantType type) {
         this.location = location;
         this.type = type;
         id = this.hashCode();
@@ -57,7 +57,7 @@ public abstract class IslandOccupant {
         location.getListOfOccupants().remove(this);
     }
 
-    public String getType() {
+    public OccupantType getType() {
         return type;
     }
 
@@ -65,12 +65,12 @@ public abstract class IslandOccupant {
         return id;
     }
 
-    public AtomicReference<Double> getWeight() {
+    public Double getWeight() {
         return weight;
     }
 
     public void setWeight(Double weight) {
-        this.weight.set(weight);
+        this.weight = weight;
     }
 
     @Override

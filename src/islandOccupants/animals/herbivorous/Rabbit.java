@@ -1,11 +1,12 @@
 package islandOccupants.animals.herbivorous;
 
 import enums.CreationType;
+import enums.OccupantType;
 import island.Location;
 
 public class Rabbit extends Herbivorous {
 
-    public Rabbit(Location location, String type, CreationType creationType) {
+    public Rabbit(Location location, OccupantType type, CreationType creationType) {
         super(location, type, creationType);
         setMaxAmountOfOccupants(150);
         setWeight(2.0);

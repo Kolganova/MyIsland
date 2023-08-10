@@ -1,7 +1,5 @@
 package enums.aging;
 
-import enums.aging.Aging;
-
 public enum DeadAnimalAging implements Aging {
     FRESH(1, 19),
     NOT_FRESH(20, 50);

@@ -1,6 +1,7 @@
 package islandOccupants.animals.herbivorous;
 
 import enums.CreationType;
+import enums.OccupantType;
 import interfaces.EatablePlant;
 import island.Location;
 import islandOccupants.IslandOccupant;
@@ -9,7 +10,7 @@ import islandOccupants.plants.Plant;
 
 public abstract class Herbivorous extends Animal implements EatablePlant {
 
-    public Herbivorous(Location location, String type, CreationType creationType) {
+    public Herbivorous(Location location, OccupantType type, CreationType creationType) {
         super(location, type, creationType);
     }
 

@@ -16,7 +16,7 @@ public enum OccupantType {
     EAGLE("\uD83E\uDD85"),
     FOX("\uD83E\uDD8A"),
     WOLF("\uD83D\uDC3A"),
-    DEAD_ANIMALS("\uD83E\uDD69"),
+    DEAD_ANIMAL("\uD83E\uDD69"),
     BUSH("\uD83C\uDF33"),
     FLOWER("\uD83C\uDF37"),
     GRASS("\uD83C\uDF31"),

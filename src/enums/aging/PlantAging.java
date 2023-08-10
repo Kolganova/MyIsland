@@ -1,7 +1,5 @@
 package enums.aging;
 
-import enums.aging.Aging;
-
 public enum PlantAging implements Aging {
     NEWBORN(0, 9),
     GROWN(10, 39),

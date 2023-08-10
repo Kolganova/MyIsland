@@ -1,6 +1,7 @@
 package islandOccupants.animals.omnivores;
 
 import enums.CreationType;
+import enums.OccupantType;
 import interfaces.EatableAnimal;
 import interfaces.EatableDeadAnimal;
 import interfaces.EatablePlant;
@@ -14,7 +15,7 @@ import islandOccupants.plants.Plant;
 
 public abstract class Omnivores extends Animal implements EatableAnimal, EatableDeadAnimal, EatablePlant {
 
-    public Omnivores(Location location, String type, CreationType creationType) {
+    public Omnivores(Location location, OccupantType type, CreationType creationType) {
         super(location, type, creationType);
     }
 
@@ -26,7 +27,7 @@ public abstract class Omnivores extends Animal implements EatableAnimal, Eatable
         } else if (occupant instanceof DeadAnimal && getRandom().nextBoolean()) {
             eatDeadAnimal(this, (DeadAnimal) occupant);
             return true;
-        } else if (occupant instanceof Animal){
+        } else if (occupant instanceof Animal) {
             return eatAnimal((Animal) occupant);
         }
 
@@ -43,7 +44,6 @@ public abstract class Omnivores extends Animal implements EatableAnimal, Eatable
         }
 
         return false;
-
     }
 
 }

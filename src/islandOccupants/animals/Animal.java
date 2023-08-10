@@ -1,5 +1,6 @@
 package islandOccupants.animals;
 
+import enums.OccupantType;
 import enums.aging.AnimalAging;
 import enums.CreationType;
 import interfaces.*;
@@ -11,6 +12,8 @@ import islandOccupants.deadAnimals.DeadAnimal;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static enums.OccupantType.DEAD_ANIMAL;
+
 public abstract class Animal extends IslandOccupant implements Movable, Eatable {
     private int maxAmountOfMoves;
     private double satietyCostOnMove;
@@ -20,9 +23,8 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable 
     private boolean isFemale;
     private int moveCounter;
 
-    public Animal(Location location, String type, CreationType creationType) {
+    public Animal(Location location, OccupantType type, CreationType creationType) {
         super(location, type);
-//        Island.incrementAmountOfAnimals();
         switch (creationType) {
             case NEWBORN -> setNewbornAnimal();
             case START_OCCUPANT -> setStartAnimal();
@@ -75,7 +77,7 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable 
 
     @Override
     public void nutritionProcess(IslandOccupant occupant) {
-        double occupantWeight = occupant.getWeight().get();
+        double occupantWeight = occupant.getWeight();
         double eaterCurrentSatiety = this.getCurrentSatiety().get();
         double eaterBellySize = this.getBellySize().get();
         boolean willBellyFitOccupant = occupantWeight + eaterCurrentSatiety <= eaterBellySize;
@@ -86,7 +88,7 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable 
             this.setCurrentSatiety(eaterBellySize);
             if (occupant instanceof Animal) {
                 double deadAnimalWeight = occupantWeight - (eaterBellySize - eaterCurrentSatiety);
-                new DeadAnimal(this.getLocation(), "deadAnimal", deadAnimalWeight);
+                new DeadAnimal(this.getLocation(), DEAD_ANIMAL, deadAnimalWeight);
             }
             occupant.die();
         }

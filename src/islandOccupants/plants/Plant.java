@@ -1,6 +1,7 @@
 package islandOccupants.plants;
 
 import enums.CreationType;
+import enums.OccupantType;
 import enums.aging.PlantAging;
 import island.Location;
 import islandOccupants.IslandOccupant;
@@ -10,7 +11,7 @@ public abstract class Plant extends IslandOccupant {
     private int propagationFrequency;
     private boolean isPoisonous;
 
-    public Plant(Location location, String type, CreationType creationType) {
+    public Plant(Location location, OccupantType type, CreationType creationType) {
         super(location, type);
         switch (creationType) {
             case NEWBORN -> setAge(1);

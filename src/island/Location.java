@@ -1,6 +1,7 @@
 package island;
 
 import enums.CreationType;
+import enums.OccupantType;
 import islandOccupants.IslandOccupant;
 
 import java.util.*;
@@ -8,11 +9,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static enums.OccupantType.DEAD_ANIMAL;
 import static islandOccupants.OccupantFactory.createOccupant;
 
 public class Location {
     private final CopyOnWriteArrayList<IslandOccupant> listOfOccupants = new CopyOnWriteArrayList<>();
-    private final ConcurrentHashMap<String, AtomicInteger> mapWithOccupantsOnLocation = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<OccupantType, AtomicInteger> mapWithOccupantsOnLocation = new ConcurrentHashMap<>();
     private int indexOfInnerList;
     private int indexOfExternalList;
 
@@ -34,8 +36,8 @@ public class Location {
     }
 
     protected synchronized void primaryAnimalsCreator() {
-        for (String type : this.getMapWithOccupantsOnLocation().keySet()) {
-            if ("deadAnimal".equals(type))
+        for (OccupantType type : this.getMapWithOccupantsOnLocation().keySet()) {
+            if (DEAD_ANIMAL.equals(type))
                 continue;
             IslandOccupant occupant = createOccupant(this, type, CreationType.START_OCCUPANT);
             int max = (Objects.requireNonNull(occupant).getMaxAmountOfOccupants() / 2 - 1);
@@ -47,32 +49,30 @@ public class Location {
 
     private void primarySettingMapWithOccupantsOnLocation() {
 
-        List<String> listOfOccupantsType = new ArrayList<>(List.of("wolf", "boa", "fox", "bear",
-                "eagle", "horse", "deer", "rabbit", "mouse", "goat", "sheep", "boar", "buffalo", "duck",
-                "caterpillar", "flower", "poisonFlower", "bush", "grass", "deadAnimal"));
+        EnumSet<OccupantType> occupantTypeEnumSet = EnumSet.allOf(OccupantType.class);
 
-        HashMap<String, AtomicInteger> map = listOfOccupantsType
+        HashMap<OccupantType, AtomicInteger> map = occupantTypeEnumSet
                 .stream()
                 .collect(HashMap::new, (k, v) -> k.put(v, new AtomicInteger()), Map::putAll);
 
         mapWithOccupantsOnLocation.putAll(map);
     }
 
-    public synchronized void incrementAmountOfOccupantsOnLocation(String type) {
+    public synchronized void incrementAmountOfOccupantsOnLocation(OccupantType type) {
         mapWithOccupantsOnLocation.computeIfPresent(type, (key, value) -> {
             value.incrementAndGet();
             return value;
         });
     }
 
-    public synchronized void decrementAmountOfOccupantsOnLocation(String type) {
+    public synchronized void decrementAmountOfOccupantsOnLocation(OccupantType type) {
         mapWithOccupantsOnLocation.computeIfPresent(type, (key, value) -> {
             value.decrementAndGet();
             return value;
         });
     }
 
-    public ConcurrentHashMap<String, AtomicInteger> getMapWithOccupantsOnLocation() {
+    public ConcurrentHashMap<OccupantType, AtomicInteger> getMapWithOccupantsOnLocation() {
         return mapWithOccupantsOnLocation;
     }
 

@@ -1,6 +1,7 @@
 package islandOccupants.animals.preadators;
 
 import enums.CreationType;
+import enums.OccupantType;
 import interfaces.EatableAnimal;
 import interfaces.EatableDeadAnimal;
 import island.Location;
@@ -13,7 +14,7 @@ import islandOccupants.deadAnimals.DeadAnimal;
 
 public abstract class Predator extends Animal implements EatableAnimal, EatableDeadAnimal {
 
-    public Predator(Location location, String type, CreationType creationType) {
+    public Predator(Location location, OccupantType type, CreationType creationType) {
         super(location, type, creationType);
     }
 

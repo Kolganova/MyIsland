@@ -1,11 +1,12 @@
 package islandOccupants.animals.herbivorous;
 
 import enums.CreationType;
+import enums.OccupantType;
 import island.Location;
 
 public class Mouse extends Herbivorous {
 
-    public Mouse(Location location, String type, CreationType creationType) {
+    public Mouse(Location location, OccupantType type, CreationType creationType) {
         super(location, type, creationType);
         setMaxAmountOfOccupants(500);
         setIsPoisonProtected(true);

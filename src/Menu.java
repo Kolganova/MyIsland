@@ -25,11 +25,12 @@ public class Menu {
             String command = sc.nextLine();
             if ("play".equals(command)) {
                 live10DaysAtIsland();
-                if (isThereNoAliveAnimal()) {
-                    System.out.println("______________________________");
-                    System.out.println("Эх, все животные умерли :(");
-                    break;
-                }
+//                if (isThereNoAliveAnimal()) {
+//                    // добавить проверку сколько еще животных на острове
+//                    System.out.println("______________________________");
+//                    System.out.println("Эх, все животные умерли :(");
+//                    break;
+//                }
                 Statistics.showStatistics();
             } else if ("stop".equals(command)) {
                 break;
@@ -111,10 +112,6 @@ public class Menu {
 
     }
 
-    private static boolean isThereNoAliveAnimal() {
-
-        return Statistics.getAmountOfAnimals() <= 0;
-    }
 
     private static void printIntroduction() {
         System.out.println("Добрый день!\nВы открыли симуляцию очень реалистичного острова \"" +

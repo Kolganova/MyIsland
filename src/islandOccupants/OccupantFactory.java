@@ -1,6 +1,7 @@
 package islandOccupants;
 
 import enums.CreationType;
+import enums.OccupantType;
 import island.Location;
 import islandOccupants.animals.herbivorous.*;
 import islandOccupants.animals.omnivores.*;
@@ -9,67 +10,31 @@ import islandOccupants.plants.*;
 
 public class OccupantFactory {
 
-    public static IslandOccupant createOccupant(Location location, String type, CreationType creationType) {
+    public static IslandOccupant createOccupant(Location location, OccupantType type, CreationType creationType) {
+        IslandOccupant toReturn;
         switch (type) {
-            case "wolf" -> {
-                return new Wolf(location, type, creationType);
-            }
-            case "boa" -> {
-                return new Boa(location, type, creationType);
-            }
-            case "fox" -> {
-                return new Fox(location, type, creationType);
-            }
-            case "bear" -> {
-                return new Bear(location, type, creationType);
-            }
-            case "eagle" -> {
-                return new Eagle(location, type, creationType);
-            }
-            case "horse" -> {
-                return new Horse(location, type, creationType);
-            }
-            case "deer" -> {
-                return new Deer(location, type, creationType);
-            }
-            case "rabbit" -> {
-                return new Rabbit(location, type, creationType);
-            }
-            case "mouse" -> {
-                return new Mouse(location, type, creationType);
-            }
-            case "goat" -> {
-                return new Goat(location, type, creationType);
-            }
-            case "sheep" -> {
-                return new Sheep(location, type, creationType);
-            }
-            case "boar" -> {
-                return new Boar(location, type, creationType);
-            }
-            case "buffalo" -> {
-                return new Buffalo(location, type, creationType);
-            }
-            case "duck" -> {
-                return new Duck(location, type, creationType);
-            }
-            case "caterpillar" -> {
-                return new Caterpillar(location, type, creationType);
-            }
-            case "flower" -> {
-                return new Flower(location, type, creationType);
-            }
-            case "poisonFlower" -> {
-                return new PoisonFlower(location, type, creationType);
-            }
-            case "bush" -> {
-                return new Bush(location, type, creationType);
-            }
-            case "grass" -> {
-                return new Grass(location, type, creationType);
-            }
+            case WOLF -> toReturn = new Wolf(location, type, creationType);
+            case BOA -> toReturn = new Boa(location, type, creationType);
+            case FOX -> toReturn = new Fox(location, type, creationType);
+            case BEAR -> toReturn = new Bear(location, type, creationType);
+            case EAGLE -> toReturn = new Eagle(location, type, creationType);
+            case HORSE -> toReturn = new Horse(location, type, creationType);
+            case DEER -> toReturn = new Deer(location, type, creationType);
+            case RABBIT -> toReturn = new Rabbit(location, type, creationType);
+            case MOUSE -> toReturn = new Mouse(location, type, creationType);
+            case GOAT -> toReturn = new Goat(location, type, creationType);
+            case SHEEP -> toReturn = new Sheep(location, type, creationType);
+            case BOAR -> toReturn = new Boar(location, type, creationType);
+            case BUFFALO -> toReturn = new Buffalo(location, type, creationType);
+            case DUCK -> toReturn = new Duck(location, type, creationType);
+            case CATERPILLAR -> toReturn = new Caterpillar(location, type, creationType);
+            case FLOWER -> toReturn = new Flower(location, type, creationType);
+            case POISON_FLOWER -> toReturn = new PoisonFlower(location, type, creationType);
+            case BUSH -> toReturn = new Bush(location, type, creationType);
+            case GRASS -> toReturn = new Grass(location, type, creationType);
+            default -> throw new IllegalStateException("Unexpected value: " + type);
         }
-        return null;
+        return toReturn;
     }
 
 }
