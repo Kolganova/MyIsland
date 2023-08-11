@@ -7,7 +7,6 @@ import interfaces.*;
 import island.Location;
 import islandOccupants.IslandOccupant;
 import islandOccupants.OccupantFactory;
-import islandOccupants.deadAnimals.DeadAnimal;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicReference;
