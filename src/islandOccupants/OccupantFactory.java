@@ -6,6 +6,7 @@ import island.Location;
 import islandOccupants.animals.herbivorous.*;
 import islandOccupants.animals.omnivores.*;
 import islandOccupants.animals.preadators.*;
+import islandOccupants.deadAnimals.DeadAnimal;
 import islandOccupants.plants.*;
 
 public class OccupantFactory {
@@ -32,6 +33,7 @@ public class OccupantFactory {
             case POISON_FLOWER -> toReturn = new PoisonFlower(location, type, creationType);
             case BUSH -> toReturn = new Bush(location, type, creationType);
             case GRASS -> toReturn = new Grass(location, type, creationType);
+            case DEAD_ANIMAL -> toReturn = new DeadAnimal(location, type);
             default -> throw new IllegalStateException("Unexpected value: " + type);
         }
         return toReturn;

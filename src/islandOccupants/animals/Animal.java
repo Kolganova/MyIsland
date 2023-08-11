@@ -88,7 +88,8 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable 
             this.setCurrentSatiety(eaterBellySize);
             if (occupant instanceof Animal) {
                 double deadAnimalWeight = occupantWeight - (eaterBellySize - eaterCurrentSatiety);
-                new DeadAnimal(this.getLocation(), DEAD_ANIMAL, deadAnimalWeight);
+                IslandOccupant deadAnimal = OccupantFactory.createOccupant(this.getLocation(), DEAD_ANIMAL, null);
+                deadAnimal.setWeight(deadAnimalWeight);
             }
             occupant.die();
         }

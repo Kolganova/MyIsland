@@ -7,10 +7,9 @@ import islandOccupants.IslandOccupant;
 
 public class DeadAnimal extends IslandOccupant {
 
-    public DeadAnimal(Location location, OccupantType type, double weight) {
+    public DeadAnimal(Location location, OccupantType type) {
         super(location, type);
         setAge(1);
-        setWeight(weight);
         setMaxAmountOfOccupants(100);
         location.addOccupantInLocation(this);
     }
