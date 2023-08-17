@@ -37,7 +37,7 @@ public abstract class IslandOccupant {
         this.maxAmountOfOccupants = maxAmountOfEntitiesOnLocation;
     }
 
-    protected Location getLocation() {
+    public Location getLocation() {
         return location;
     }
 
@@ -58,7 +58,7 @@ public abstract class IslandOccupant {
         return type;
     }
 
-    protected int getId() {
+    public int getId() {
         return id;
     }
 

@@ -1,5 +1,7 @@
 package island;
 
+import interfaces.multipliable.AnimalMultiplication;
+import interfaces.multipliable.PlantMultiplication;
 import islandOccupants.IslandOccupant;
 import islandOccupants.animals.Animal;
 import islandOccupants.deadAnimals.DeadAnimal;
@@ -34,6 +36,7 @@ public class LocationLife {
             completionService.submit(() -> {
                 IslandOccupant occupant = listOfOccupants.get(i.get());
                 if (occupant instanceof Plant plant) {
+                    new PlantMultiplication(plant).actLikeMultipliablePlant();
                     plant.actLikePlant();
                 } else if (occupant instanceof Animal animal) {
                     int dice =  ThreadLocalRandom.current().nextInt(100);
@@ -56,7 +59,7 @@ public class LocationLife {
                             do {
                                 indexOfPartner = ThreadLocalRandom.current().nextInt(listOfOccupants.size()+1);
                             } while (indexOfPartner == i.get());
-                            boolean didMultiply = animal.actLikeMultipliableAnimal(
+                            boolean didMultiply = new AnimalMultiplication(animal).actLikeMultipliableAnimal(
                                     (Animal) listOfOccupants.get(indexOfPartner));
                             if (didMultiply || counter > 6)
                                 break;

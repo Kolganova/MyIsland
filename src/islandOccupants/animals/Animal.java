@@ -41,34 +41,6 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable,
         setAge(ThreadLocalRandom.current().nextInt(1, 301));
     }
 
-    private boolean isAbleToMultiply() {
-        int currentAmountOfOccupants = this.getLocation().getMapWithOccupantsOnLocation().get(getType()).get();
-        boolean isGrownEnough = checkAgingPhase(AnimalAging.class) == AnimalAging.YOUNG;
-        boolean isEnoughSpaceOnLocation = currentAmountOfOccupants < getMaxAmountOfOccupants();
-
-        return (isGrownEnough && isEnoughSpaceOnLocation);
-    }
-
-    private static boolean isCoupleAppropriate(Animal occupant1, Animal occupant2) {
-        boolean isApproved = false;
-        Animal partner1 = occupant1.getId() > occupant2.getId() ? occupant1 : occupant2;
-        Animal partner2 = occupant1.getId() > occupant2.getId() ? occupant2 : occupant1;
-        if ((partner1.isFemale && !(partner2.isFemale())) || (partner2.isFemale && !(partner1.isFemale()))) {
-            if (partner1.isAbleToMultiply() && partner2.isAbleToMultiply()) {
-                isApproved = true;
-            }
-        }
-
-        return isApproved;
-    }
-
-    private synchronized void multiply() {
-        int amountOfChildren = ThreadLocalRandom.current().nextInt(1, 4);
-        for (int i = 0; i < amountOfChildren; i++) {
-            OccupantFactory.createOccupant(this.getLocation(), this.getType(), CreationType.NEWBORN);
-        }
-    }
-
     @Override
     public void move(Location location) {
         location.addOccupantInLocation(this);
@@ -98,16 +70,6 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable,
     public boolean actLikeEatingAnimal(IslandOccupant occupant) {
 
         return this.eat(occupant);
-    }
-
-    public boolean actLikeMultipliableAnimal(Animal partner) {
-        boolean result = false;
-        if (Animal.isCoupleAppropriate(this, partner)) {
-            this.multiply();
-            result = true;
-        }
-
-        return result;
     }
 
     public void actLikeMovingAnimal(CopyOnWriteArrayList<CopyOnWriteArrayList<Location>> listOfLocations) {
@@ -195,5 +157,7 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable,
     }
 
     protected void setFemale() {
-        isFemale = ThreadLocalRandom.current().nextBoolean();    }
+        isFemale = ThreadLocalRandom.current().nextBoolean();
+    }
+
 }

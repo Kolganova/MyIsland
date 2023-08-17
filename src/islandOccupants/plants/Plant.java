@@ -6,7 +6,6 @@ import enums.aging.PlantAging;
 import interfaces.initializable.InitializablePlant;
 import island.Location;
 import islandOccupants.IslandOccupant;
-import islandOccupants.OccupantFactory;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -22,28 +21,7 @@ public abstract class Plant extends IslandOccupant implements InitializablePlant
         }
     }
 
-    private boolean isAbleToMultiply() {
-        boolean isAble = false;
-        int currentAmountOfPlants = this.getLocation().getMapWithOccupantsOnLocation().get(this.getType()).get();
-
-        if (currentAmountOfPlants < getMaxAmountOfOccupants() && checkAgingPhase(PlantAging.class) == PlantAging.GROWN) {
-            isAble = true;
-        }
-
-        return isAble;
-    }
-
-    private synchronized void multiply() {
-        if (this.isAbleToMultiply()) {
-            for (int i = 0; i < propagationFrequency; i++) {
-                OccupantFactory.createOccupant(this.getLocation(), this.getType(), CreationType.NEWBORN);
-            }
-        }
-    }
-
     public void actLikePlant() {
-        if (this.isAbleToMultiply() && ThreadLocalRandom.current().nextInt(100) < 50)
-            this.multiply();
         if (this.checkAgingPhase(PlantAging.class) == PlantAging.FADING) {
             if (ThreadLocalRandom.current().nextInt(100) < 30) {
                 this.die();
@@ -70,5 +48,9 @@ public abstract class Plant extends IslandOccupant implements InitializablePlant
 
     public void setIsPoisonous(boolean isPoisonous) {
         this.isPoisonous = isPoisonous;
+    }
+
+    public int getPropagationFrequency() {
+        return propagationFrequency;
     }
 }

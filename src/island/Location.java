@@ -42,8 +42,6 @@ public class Location {
             IslandOccupant occupant = createOccupant(this, type, CreationType.START_OCCUPANT);
             // вот эта строчка
             int max = occupant.getMaxAmountOfOccupants() / 2 - 1;
-            System.out.println(type);
-            System.out.println(occupant.getMaxAmountOfOccupants());
             for (int i = 0; i < max; i++) {
                 createOccupant(this, type, CreationType.START_OCCUPANT);
             }
