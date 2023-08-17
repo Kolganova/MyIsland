@@ -70,11 +70,11 @@ public class Menu {
                 if (occupant instanceof Plant plant) {
                     plant.actLikePlant();
                 } else if (occupant instanceof Animal animal) {
-                    int dice = occupant.getRandom().nextInt(100);
+                    int dice =  ThreadLocalRandom.current().nextInt(100);
                     if (dice <= 40) {
                         int counter = 0;
                         while (true) {
-                            int indexOfVictim = animal.getRandom().nextInt(listOfOccupants.size());
+                            int indexOfVictim =  ThreadLocalRandom.current().nextInt(listOfOccupants.size()+1);
                             if (indexOfVictim != i.get()) {
                                 boolean didEat = animal.actLikeEatingAnimal(listOfOccupants.get(indexOfVictim));
                                 if (didEat || counter > 4)
@@ -88,11 +88,11 @@ public class Menu {
                         while (true) {
                             int indexOfPartner;
                             do {
-                                indexOfPartner = animal.getRandom().nextInt(listOfOccupants.size());
+                                indexOfPartner = ThreadLocalRandom.current().nextInt(listOfOccupants.size()+1);
                             } while (indexOfPartner == i.get());
                             boolean didMultiply = animal.actLikeMultipliableAnimal(
                                     (Animal) listOfOccupants.get(indexOfPartner));
-                            if (didMultiply || counter > 9)
+                            if (didMultiply || counter > 6)
                                 break;
                             counter++;
                         }

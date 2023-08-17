@@ -4,6 +4,8 @@ import enums.CreationType;
 import enums.OccupantType;
 import island.Location;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class Buffalo extends Herbivorous {
 
     public Buffalo(Location location, OccupantType type, CreationType creationType) {
@@ -11,7 +13,7 @@ public class Buffalo extends Herbivorous {
         setMaxAmountOfOccupants(10);
         setWeight(700.0);
         setBellySize(100.0);
-        setCurrentSatiety(getRandom().nextDouble(this.getBellySize().get()));
+        setCurrentSatiety(ThreadLocalRandom.current().nextDouble(this.getBellySize().get()));
         setSatietyCostOnMove(getBellySize().get() / 5);
         setMaxAmountOfMoves(3);
         location.addOccupantInLocation(this);

@@ -13,6 +13,8 @@ import islandOccupants.animals.herbivorous.Mouse;
 import islandOccupants.deadAnimals.DeadAnimal;
 import islandOccupants.plants.Plant;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public abstract class Omnivores extends Animal implements EatableAnimal, EatableDeadAnimal, EatablePlant {
 
     public Omnivores(Location location, OccupantType type, CreationType creationType) {
@@ -24,7 +26,7 @@ public abstract class Omnivores extends Animal implements EatableAnimal, Eatable
         if (occupant instanceof Plant) {
             eatPlant(this, (Plant) occupant);
             return true;
-        } else if (occupant instanceof DeadAnimal && getRandom().nextBoolean()) {
+        } else if (occupant instanceof DeadAnimal && ThreadLocalRandom.current().nextBoolean()) {
             eatDeadAnimal(this, (DeadAnimal) occupant);
             return true;
         } else if (occupant instanceof Animal) {
@@ -37,7 +39,7 @@ public abstract class Omnivores extends Animal implements EatableAnimal, Eatable
     @Override
     public boolean eatAnimal(Animal victim) {
         if (victim instanceof Caterpillar || (victim instanceof Mouse && this instanceof Boar)) {
-            if (getRandom().nextInt(100) <= 60) {
+            if (ThreadLocalRandom.current().nextInt(100) < 60) {
                 this.nutritionProcess(victim);
                 return true;
             }

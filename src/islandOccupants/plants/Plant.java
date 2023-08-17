@@ -7,6 +7,8 @@ import island.Location;
 import islandOccupants.IslandOccupant;
 import islandOccupants.OccupantFactory;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public abstract class Plant extends IslandOccupant {
     private int propagationFrequency;
     private boolean isPoisonous;
@@ -15,7 +17,7 @@ public abstract class Plant extends IslandOccupant {
         super(location, type);
         switch (creationType) {
             case NEWBORN -> setAge(1);
-            case START_OCCUPANT -> setAge(getRandom().nextInt(1, 40));
+            case START_OCCUPANT -> setAge(ThreadLocalRandom.current().nextInt(1, 40));
         }
     }
 
@@ -39,10 +41,10 @@ public abstract class Plant extends IslandOccupant {
     }
 
     public void actLikePlant() {
-        if (this.isAbleToMultiply() && getRandom().nextInt(100) <= 50)
+        if (this.isAbleToMultiply() && ThreadLocalRandom.current().nextInt(100) < 50)
             this.multiply();
         if (this.checkAgingPhase(PlantAging.class) == PlantAging.FADING) {
-            if (getRandom().nextInt(100) <= 30) {
+            if (ThreadLocalRandom.current().nextInt(100) < 30) {
                 this.die();
             }
         }

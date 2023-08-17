@@ -43,6 +43,7 @@ public class Statistics {
                     for (OccupantType tempType : mapOfOccupantsOnIsland.keySet()) {
                         if (typeOfCurrentOccupant == tempType) {
                             incrementAmountOfParticularOccupant(tempType);
+                            break;
                         }
                     }
                 }

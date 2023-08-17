@@ -9,6 +9,7 @@ import islandOccupants.IslandOccupant;
 import islandOccupants.OccupantFactory;
 
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static enums.OccupantType.DEAD_ANIMAL;
@@ -31,13 +32,13 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable 
     }
 
     private void setNewbornAnimal() {
-        isFemale = getRandom().nextBoolean();
+        isFemale = ThreadLocalRandom.current().nextBoolean();
         setAge(1);
     }
 
     private void setStartAnimal() {
-        isFemale = getRandom().nextBoolean();
-        setAge(getRandom().nextInt(1, 300));
+        isFemale = ThreadLocalRandom.current().nextBoolean();
+        setAge(ThreadLocalRandom.current().nextInt(1, 301));
     }
 
     public boolean isAbleToMultiply() {
@@ -62,7 +63,7 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable 
     }
 
     public synchronized void multiply() {
-        int amountOfChildren = getRandom().nextInt(6);
+        int amountOfChildren = ThreadLocalRandom.current().nextInt(1, 4);
         for (int i = 0; i < amountOfChildren; i++) {
             OccupantFactory.createOccupant(this.getLocation(), this.getType(), CreationType.NEWBORN);
         }
@@ -129,7 +130,7 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable 
         this.setCurrentSatiety(currentSatiety.get() - satietyCostOnMove);
         if ((this.checkAgingPhase(AnimalAging.class) == AnimalAging.OLD) ||
                 currentSatiety.get() <= 0) {
-            if (getRandom().nextInt(100) <= 20) {
+            if (ThreadLocalRandom.current().nextInt(100) < 20) {
                 this.die();
             }
         }

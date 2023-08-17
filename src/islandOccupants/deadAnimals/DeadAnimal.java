@@ -5,6 +5,8 @@ import enums.aging.DeadAnimalAging;
 import island.Location;
 import islandOccupants.IslandOccupant;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class DeadAnimal extends IslandOccupant {
 
     public DeadAnimal(Location location, OccupantType type) {
@@ -16,7 +18,7 @@ public class DeadAnimal extends IslandOccupant {
 
     public void actLikeDeadAnimal() {
         if (this.checkAgingPhase(DeadAnimalAging.class) == DeadAnimalAging.NOT_FRESH &&
-                getRandom().nextInt(100) <= 33)
+                ThreadLocalRandom.current().nextInt(100) < 33)
             this.die();
         this.incrementAge();
     }

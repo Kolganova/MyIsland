@@ -4,6 +4,8 @@ import enums.CreationType;
 import enums.OccupantType;
 import island.Location;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class Mouse extends Herbivorous {
 
     public Mouse(Location location, OccupantType type, CreationType creationType) {
@@ -12,7 +14,7 @@ public class Mouse extends Herbivorous {
         setIsPoisonProtected(true);
         setWeight(0.05);
         setBellySize(0.01);
-        setCurrentSatiety(getRandom().nextDouble(this.getBellySize().get()));
+        setCurrentSatiety(ThreadLocalRandom.current().nextDouble(this.getBellySize().get()));
         setSatietyCostOnMove(getBellySize().get() / 5);
         setMaxAmountOfMoves(1);
         location.addOccupantInLocation(this);
