@@ -8,10 +8,7 @@ public class Flower extends Plant {
 
     public Flower(Location location, OccupantType type, CreationType creationType) {
         super(location, type, creationType);
-        setMaxAmountOfOccupants(200);
-        setIsPoisonous(false);
-        setWeight(1.0);
-        setPropagationFrequency(2);
+        initPlant(200, false, 1, 2);
         location.addOccupantInLocation(this);
     }
 

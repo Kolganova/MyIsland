@@ -4,19 +4,11 @@ import enums.CreationType;
 import enums.OccupantType;
 import island.Location;
 
-import java.util.concurrent.ThreadLocalRandom;
-
 public class Caterpillar extends Herbivorous {
 
     public Caterpillar(Location location, OccupantType type, CreationType creationType) {
         super(location, type, creationType);
-        setMaxAmountOfOccupants(1000);
-        setIsPoisonProtected(true);
-        setWeight(0.01);
-        setBellySize(0.1);
-        setCurrentSatiety(ThreadLocalRandom.current().nextDouble(this.getBellySize().get()));
-        setSatietyCostOnMove(getBellySize().get() / 5);
-        setMaxAmountOfMoves(0);
+        initAnimal(1000, true, 0.01, 0.1, 0);
         location.addOccupantInLocation(this);
     }
 

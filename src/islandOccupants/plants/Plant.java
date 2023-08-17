@@ -3,13 +3,14 @@ package islandOccupants.plants;
 import enums.CreationType;
 import enums.OccupantType;
 import enums.aging.PlantAging;
+import interfaces.initializable.InitializablePlant;
 import island.Location;
 import islandOccupants.IslandOccupant;
 import islandOccupants.OccupantFactory;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-public abstract class Plant extends IslandOccupant {
+public abstract class Plant extends IslandOccupant implements InitializablePlant {
     private int propagationFrequency;
     private boolean isPoisonous;
 
@@ -49,6 +50,14 @@ public abstract class Plant extends IslandOccupant {
             }
         }
         this.incrementAge();
+    }
+
+    @Override
+    public void initPlant(int maxAmountOfOccupants, boolean isPoisonous, double weight, int propagationFrequency) {
+        setMaxAmountOfOccupants(maxAmountOfOccupants);
+        setIsPoisonous(isPoisonous);
+        setWeight(weight);
+        setPropagationFrequency(propagationFrequency);
     }
 
     public void setPropagationFrequency(int propagationFrequency) {

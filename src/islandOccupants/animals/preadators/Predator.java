@@ -2,8 +2,8 @@ package islandOccupants.animals.preadators;
 
 import enums.CreationType;
 import enums.OccupantType;
-import interfaces.EatableAnimal;
-import interfaces.EatableDeadAnimal;
+import interfaces.eatable.EatableAnimal;
+import interfaces.eatable.EatableDeadAnimal;
 import island.Location;
 import islandOccupants.IslandOccupant;
 import islandOccupants.animals.Animal;

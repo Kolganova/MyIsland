@@ -1,4 +1,4 @@
-package interfaces;
+package interfaces.eatable;
 
 import enums.aging.DeadAnimalAging;
 import islandOccupants.animals.Animal;

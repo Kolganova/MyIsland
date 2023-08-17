@@ -1,4 +1,4 @@
-package interfaces;
+package interfaces.eatable;
 
 import islandOccupants.IslandOccupant;
 

@@ -2,17 +2,17 @@ package islandOccupants.deadAnimals;
 
 import enums.OccupantType;
 import enums.aging.DeadAnimalAging;
+import interfaces.initializable.InitializableDeadAnimal;
 import island.Location;
 import islandOccupants.IslandOccupant;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-public class DeadAnimal extends IslandOccupant {
+public class DeadAnimal extends IslandOccupant implements InitializableDeadAnimal {
 
     public DeadAnimal(Location location, OccupantType type) {
         super(location, type);
-        setAge(1);
-        setMaxAmountOfOccupants(100);
+        initDeadAnimal(1, 100);
         location.addOccupantInLocation(this);
     }
 
@@ -23,4 +23,9 @@ public class DeadAnimal extends IslandOccupant {
         this.incrementAge();
     }
 
+    @Override
+    public void initDeadAnimal(int age, int maxAmountOfOccupants) {
+        setAge(age);
+        setMaxAmountOfOccupants(maxAmountOfOccupants);
+    }
 }

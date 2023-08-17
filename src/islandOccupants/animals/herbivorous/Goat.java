@@ -4,18 +4,11 @@ import enums.CreationType;
 import enums.OccupantType;
 import island.Location;
 
-import java.util.concurrent.ThreadLocalRandom;
-
 public class Goat extends Herbivorous {
 
     public Goat(Location location, OccupantType type, CreationType creationType) {
         super(location, type, creationType);
-        setMaxAmountOfOccupants(140);
-        setWeight(60.0);
-        setBellySize(10.0);
-        setCurrentSatiety(ThreadLocalRandom.current().nextDouble(this.getBellySize().get()));
-        setSatietyCostOnMove(getBellySize().get() / 5);
-        setMaxAmountOfMoves(3);
+        initAnimal(140, false, 60, 10, 3);
         location.addOccupantInLocation(this);
     }
 }

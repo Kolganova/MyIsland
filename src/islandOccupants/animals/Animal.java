@@ -4,6 +4,8 @@ import enums.OccupantType;
 import enums.aging.AnimalAging;
 import enums.CreationType;
 import interfaces.*;
+import interfaces.eatable.Eatable;
+import interfaces.initializable.InitializableAnimal;
 import island.Location;
 import islandOccupants.IslandOccupant;
 import islandOccupants.OccupantFactory;
@@ -14,7 +16,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static enums.OccupantType.DEAD_ANIMAL;
 
-public abstract class Animal extends IslandOccupant implements Movable, Eatable {
+public abstract class Animal extends IslandOccupant implements Movable, Eatable, InitializableAnimal {
     private int maxAmountOfMoves;
     private double satietyCostOnMove;
     private boolean isPoisonProtected;
@@ -135,6 +137,18 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable 
             }
         }
         incrementAge();
+    }
+
+    @Override
+    public void initAnimal(int maxAmountOfOccupants, boolean isPoisonProtected, double weight, double bellySize,
+                           int maxAmountOfMoves) {
+        setMaxAmountOfOccupants(maxAmountOfMoves);
+        setIsPoisonProtected(isPoisonProtected);
+        setWeight(weight);
+        setBellySize(bellySize);
+        setCurrentSatiety(ThreadLocalRandom.current().nextDouble(this.getBellySize().get()));
+        setSatietyCostOnMove(bellySize / 5);
+        setMaxAmountOfMoves(maxAmountOfMoves);
     }
 
     public boolean isFemale() {

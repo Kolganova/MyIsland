@@ -2,9 +2,9 @@ package islandOccupants.animals.omnivores;
 
 import enums.CreationType;
 import enums.OccupantType;
-import interfaces.EatableAnimal;
-import interfaces.EatableDeadAnimal;
-import interfaces.EatablePlant;
+import interfaces.eatable.EatableAnimal;
+import interfaces.eatable.EatableDeadAnimal;
+import interfaces.eatable.EatablePlant;
 import island.Location;
 import islandOccupants.IslandOccupant;
 import islandOccupants.animals.Animal;

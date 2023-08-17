@@ -8,10 +8,7 @@ public class PoisonFlower extends Plant {
 
     public PoisonFlower(Location location, OccupantType type, CreationType creationType) {
         super(location, type, creationType);
-        setMaxAmountOfOccupants(100);
-        setIsPoisonous(true);
-        setWeight(1.0);
-        setPropagationFrequency(1);
+        initPlant(100, true, 1, 1);
         location.addOccupantInLocation(this);
     }
 

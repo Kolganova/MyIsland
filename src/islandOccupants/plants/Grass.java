@@ -8,10 +8,8 @@ public class Grass extends Plant {
 
     public Grass(Location location, OccupantType type, CreationType creationType) {
         super(location, type, creationType);
-        setMaxAmountOfOccupants(400);
-        setIsPoisonous(false);
-        setWeight(1.0);
-        setPropagationFrequency(3);
+        initPlant(400, false, 1, 3);
         location.addOccupantInLocation(this);
     }
+
 }
