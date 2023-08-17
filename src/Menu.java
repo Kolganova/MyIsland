@@ -25,12 +25,11 @@ public class Menu {
             String command = sc.nextLine();
             if ("play".equals(command)) {
                 live10DaysAtIsland();
-//                if (isThereNoAliveAnimal()) {
-//                    // добавить проверку сколько еще животных на острове
-//                    System.out.println("______________________________");
-//                    System.out.println("Эх, все животные умерли :(");
-//                    break;
-//                }
+                if (isThereNoAliveAnimal()) {
+                    System.out.println("______________________________");
+                    System.out.println("Эх, все животные умерли :(");
+                    break;
+                }
                 Statistics.showStatistics();
             } else if ("stop".equals(command)) {
                 break;
@@ -56,7 +55,6 @@ public class Menu {
     }
 
     private static void liveADayAtLocation(CopyOnWriteArrayList<IslandOccupant> listOfOccupants) {
-
         List<IslandOccupant> temp = new ArrayList<>(listOfOccupants);
         Collections.shuffle(temp);
         listOfOccupants.clear();
@@ -115,9 +113,21 @@ public class Menu {
 
     private static void printIntroduction() {
         System.out.println("Добрый день!\nВы открыли симуляцию очень реалистичного острова \"" +
-                Island.getIsland().getName() + "\".\nВводите \"play\" для того, что бы наш островок прожил свой" +
+                Island.getIsland().getName() + "\"." +
+                "\nВводите \"play\" для того, что бы наш островок прожил свой" +
                 "очередной жалкий цикл (10 дней) или введите \"stop\" для уничтожения несчастного островка.\n" +
                 "Если все животные умрут, то симуляция так же закончится.");
     }
 
+    private static boolean isThereNoAliveAnimal() {
+        return Statistics.getCurrentAmountOfOccupantsOnIsland() <= 0;
+    }
+
 }
+
+/*
+1. почему-то перестали создаваться гусенницы
+2. скорее всего нужно перенести все параметры occupants в enum'ы
+3. первинчая инициализая не рабтотает потому что (скорее всего) запрашмваем maxAmount когда она еще не
+успела инициализироваться
+ */

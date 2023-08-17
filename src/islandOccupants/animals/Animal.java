@@ -1,11 +1,11 @@
 package islandOccupants.animals;
 
-import enums.OccupantType;
+import enums.types.OccupantType;
 import enums.aging.AnimalAging;
-import enums.CreationType;
-import interfaces.*;
+import enums.types.CreationType;
 import interfaces.eatable.Eatable;
 import interfaces.initializable.InitializableAnimal;
+import interfaces.movable.Movable;
 import island.Location;
 import islandOccupants.IslandOccupant;
 import islandOccupants.OccupantFactory;
@@ -14,7 +14,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static enums.OccupantType.DEAD_ANIMAL;
+import static enums.types.OccupantType.DEAD_ANIMAL;
 
 public abstract class Animal extends IslandOccupant implements Movable, Eatable, InitializableAnimal {
     private int maxAmountOfMoves;

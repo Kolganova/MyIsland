@@ -1,4 +1,4 @@
-package enums;
+package enums.types;
 
 public enum OccupantType {
     BUFFALO("\uD83D\uDC03"),

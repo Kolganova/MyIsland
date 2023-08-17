@@ -1,7 +1,7 @@
 package islandOccupants.animals.herbivorous;
 
-import enums.CreationType;
-import enums.OccupantType;
+import enums.types.CreationType;
+import enums.types.OccupantType;
 import interfaces.eatable.EatablePlant;
 import island.Location;
 import islandOccupants.IslandOccupant;

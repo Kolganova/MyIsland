@@ -1,7 +1,7 @@
 package islandOccupants.plants;
 
-import enums.CreationType;
-import enums.OccupantType;
+import enums.types.CreationType;
+import enums.types.OccupantType;
 import enums.aging.PlantAging;
 import interfaces.initializable.InitializablePlant;
 import island.Location;

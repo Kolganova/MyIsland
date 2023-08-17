@@ -1,4 +1,4 @@
-package interfaces;
+package interfaces.movable;
 
 import island.Location;
 

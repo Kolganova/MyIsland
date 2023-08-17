@@ -1,6 +1,6 @@
 package islandOccupants;
 
-import enums.OccupantType;
+import enums.types.OccupantType;
 import enums.aging.Aging;
 import island.Location;
 

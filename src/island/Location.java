@@ -1,7 +1,7 @@
 package island;
 
-import enums.CreationType;
-import enums.OccupantType;
+import enums.types.CreationType;
+import enums.types.OccupantType;
 import islandOccupants.IslandOccupant;
 
 import java.util.*;
@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static enums.OccupantType.DEAD_ANIMAL;
+import static enums.types.OccupantType.DEAD_ANIMAL;
 import static islandOccupants.OccupantFactory.createOccupant;
 
 public class Location {
@@ -40,6 +40,8 @@ public class Location {
             if (DEAD_ANIMAL.equals(type))
                 continue;
             IslandOccupant occupant = createOccupant(this, type, CreationType.START_OCCUPANT);
+
+            // вот эта строчка
             int max = (Objects.requireNonNull(occupant).getMaxAmountOfOccupants() / 2 - 1);
             for (int i = 0; i < max; i++) {
                 createOccupant(this, type, CreationType.START_OCCUPANT);
