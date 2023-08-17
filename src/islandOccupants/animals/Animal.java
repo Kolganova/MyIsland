@@ -25,7 +25,7 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable,
     private boolean isFemale;
     private int moveCounter;
 
-    public Animal(Location location, OccupantType type, CreationType creationType) {
+    protected Animal(Location location, OccupantType type, CreationType creationType) {
         super(location, type);
         switch (creationType) {
             case NEWBORN -> setNewbornAnimal();
@@ -34,16 +34,14 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable,
     }
 
     private void setNewbornAnimal() {
-        isFemale = ThreadLocalRandom.current().nextBoolean();
         setAge(1);
     }
 
     private void setStartAnimal() {
-        isFemale = ThreadLocalRandom.current().nextBoolean();
         setAge(ThreadLocalRandom.current().nextInt(1, 301));
     }
 
-    public boolean isAbleToMultiply() {
+    private boolean isAbleToMultiply() {
         int currentAmountOfOccupants = this.getLocation().getMapWithOccupantsOnLocation().get(getType()).get();
         boolean isGrownEnough = checkAgingPhase(AnimalAging.class) == AnimalAging.YOUNG;
         boolean isEnoughSpaceOnLocation = currentAmountOfOccupants < getMaxAmountOfOccupants();
@@ -51,7 +49,7 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable,
         return (isGrownEnough && isEnoughSpaceOnLocation);
     }
 
-    public static boolean isCoupleAppropriate(Animal occupant1, Animal occupant2) {
+    private static boolean isCoupleAppropriate(Animal occupant1, Animal occupant2) {
         boolean isApproved = false;
         Animal partner1 = occupant1.getId() > occupant2.getId() ? occupant1 : occupant2;
         Animal partner2 = occupant1.getId() > occupant2.getId() ? occupant2 : occupant1;
@@ -64,7 +62,7 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable,
         return isApproved;
     }
 
-    public synchronized void multiply() {
+    private synchronized void multiply() {
         int amountOfChildren = ThreadLocalRandom.current().nextInt(1, 4);
         for (int i = 0; i < amountOfChildren; i++) {
             OccupantFactory.createOccupant(this.getLocation(), this.getType(), CreationType.NEWBORN);
@@ -142,13 +140,14 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable,
     @Override
     public void initAnimal(int maxAmountOfOccupants, boolean isPoisonProtected, double weight, double bellySize,
                            int maxAmountOfMoves) {
-        setMaxAmountOfOccupants(maxAmountOfMoves);
+        setMaxAmountOfOccupants(maxAmountOfOccupants);
         setIsPoisonProtected(isPoisonProtected);
         setWeight(weight);
         setBellySize(bellySize);
         setCurrentSatiety(ThreadLocalRandom.current().nextDouble(this.getBellySize().get()));
         setSatietyCostOnMove(bellySize / 5);
         setMaxAmountOfMoves(maxAmountOfMoves);
+        setFemale();
     }
 
     public boolean isFemale() {
@@ -159,11 +158,11 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable,
         return isPoisonProtected;
     }
 
-    public void setIsPoisonProtected(boolean isPoisonProtected) {
+    private void setIsPoisonProtected(boolean isPoisonProtected) {
         this.isPoisonProtected = isPoisonProtected;
     }
 
-    public void setMaxAmountOfMoves(int maxAmountOfMoves) {
+    private void setMaxAmountOfMoves(int maxAmountOfMoves) {
         this.maxAmountOfMoves = maxAmountOfMoves;
     }
 
@@ -171,11 +170,11 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable,
         return bellySize;
     }
 
-    public void setBellySize(Double bellySize) {
+    protected void setBellySize(Double bellySize) {
         this.bellySize.set(bellySize);
     }
 
-    public void setSatietyCostOnMove(double satietyCostOnMove) {
+    protected void setSatietyCostOnMove(double satietyCostOnMove) {
         this.satietyCostOnMove = satietyCostOnMove;
     }
 
@@ -187,7 +186,7 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable,
         this.currentSatiety.set(currentSatiety);
     }
 
-    public void incrementMoveCounter() {
+    protected void incrementMoveCounter() {
         moveCounter++;
     }
 
@@ -195,4 +194,6 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable,
         this.moveCounter = moveCounter;
     }
 
+    protected void setFemale() {
+        isFemale = ThreadLocalRandom.current().nextBoolean();    }
 }

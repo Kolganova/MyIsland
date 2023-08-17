@@ -24,7 +24,6 @@ public class Statistics {
         countAmountOfParticularOccupantOnIsland();
         System.out.println("______________________________");
         System.out.println("Обитатели островка на данный момент:");
-        System.out.println(getCurrentAmountOfOccupantsOnIsland());
         mapOfOccupantsOnIsland.forEach((key, value) -> System.out.printf("%s - %,d%n", key.getUnicode(), value));
     }
 

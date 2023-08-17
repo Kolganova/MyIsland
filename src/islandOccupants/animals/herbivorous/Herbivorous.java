@@ -10,7 +10,7 @@ import islandOccupants.plants.Plant;
 
 public abstract class Herbivorous extends Animal implements EatablePlant {
 
-    public Herbivorous(Location location, OccupantType type, CreationType creationType) {
+    protected Herbivorous(Location location, OccupantType type, CreationType creationType) {
         super(location, type, creationType);
     }
 

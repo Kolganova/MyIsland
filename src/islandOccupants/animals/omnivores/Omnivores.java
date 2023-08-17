@@ -17,7 +17,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Omnivores extends Animal implements EatableAnimal, EatableDeadAnimal, EatablePlant {
 
-    public Omnivores(Location location, OccupantType type, CreationType creationType) {
+    protected Omnivores(Location location, OccupantType type, CreationType creationType) {
         super(location, type, creationType);
     }
 

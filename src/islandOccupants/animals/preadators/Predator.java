@@ -16,7 +16,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Predator extends Animal implements EatableAnimal, EatableDeadAnimal {
 
-    public Predator(Location location, OccupantType type, CreationType creationType) {
+    protected Predator(Location location, OccupantType type, CreationType creationType) {
         super(location, type, creationType);
     }
 

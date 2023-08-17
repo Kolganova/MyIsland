@@ -12,9 +12,9 @@ public abstract class IslandOccupant {
     private final OccupantType type;
     private int age;
     private final int id;
-    Location location;
+    private final Location location;
 
-    public IslandOccupant(Location location, OccupantType type) {
+    protected IslandOccupant(Location location, OccupantType type) {
         this.location = location;
         this.type = type;
         id = this.hashCode();
@@ -33,19 +33,19 @@ public abstract class IslandOccupant {
         return maxAmountOfOccupants;
     }
 
-    public void setMaxAmountOfOccupants(int maxAmountOfEntitiesOnLocation) {
+    protected void setMaxAmountOfOccupants(int maxAmountOfEntitiesOnLocation) {
         this.maxAmountOfOccupants = maxAmountOfEntitiesOnLocation;
     }
 
-    public Location getLocation() {
+    protected Location getLocation() {
         return location;
     }
 
-    public int getAge() {
+    protected int getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    protected void setAge(int age) {
         this.age = age;
     }
 
@@ -58,7 +58,7 @@ public abstract class IslandOccupant {
         return type;
     }
 
-    public int getId() {
+    protected int getId() {
         return id;
     }
 

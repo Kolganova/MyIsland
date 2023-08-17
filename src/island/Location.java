@@ -40,9 +40,10 @@ public class Location {
             if (DEAD_ANIMAL.equals(type))
                 continue;
             IslandOccupant occupant = createOccupant(this, type, CreationType.START_OCCUPANT);
-
             // вот эта строчка
-            int max = (Objects.requireNonNull(occupant).getMaxAmountOfOccupants() / 2 - 1);
+            int max = occupant.getMaxAmountOfOccupants() / 2 - 1;
+            System.out.println(type);
+            System.out.println(occupant.getMaxAmountOfOccupants());
             for (int i = 0; i < max; i++) {
                 createOccupant(this, type, CreationType.START_OCCUPANT);
             }
@@ -97,6 +98,5 @@ public class Location {
     public CopyOnWriteArrayList<IslandOccupant> getListOfOccupants() {
         return listOfOccupants;
     }
-
 
 }

@@ -14,7 +14,7 @@ public abstract class Plant extends IslandOccupant implements InitializablePlant
     private int propagationFrequency;
     private boolean isPoisonous;
 
-    public Plant(Location location, OccupantType type, CreationType creationType) {
+    protected Plant(Location location, OccupantType type, CreationType creationType) {
         super(location, type);
         switch (creationType) {
             case NEWBORN -> setAge(1);
@@ -22,7 +22,7 @@ public abstract class Plant extends IslandOccupant implements InitializablePlant
         }
     }
 
-    public boolean isAbleToMultiply() {
+    private boolean isAbleToMultiply() {
         boolean isAble = false;
         int currentAmountOfPlants = this.getLocation().getMapWithOccupantsOnLocation().get(this.getType()).get();
 
@@ -33,7 +33,7 @@ public abstract class Plant extends IslandOccupant implements InitializablePlant
         return isAble;
     }
 
-    public synchronized void multiply() {
+    private synchronized void multiply() {
         if (this.isAbleToMultiply()) {
             for (int i = 0; i < propagationFrequency; i++) {
                 OccupantFactory.createOccupant(this.getLocation(), this.getType(), CreationType.NEWBORN);
@@ -60,7 +60,7 @@ public abstract class Plant extends IslandOccupant implements InitializablePlant
         setPropagationFrequency(propagationFrequency);
     }
 
-    public void setPropagationFrequency(int propagationFrequency) {
+    private void setPropagationFrequency(int propagationFrequency) {
         this.propagationFrequency = propagationFrequency;
     }
 
