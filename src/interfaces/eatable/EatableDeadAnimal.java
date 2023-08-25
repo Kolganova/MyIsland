@@ -11,7 +11,7 @@ public interface EatableDeadAnimal extends Eatable {
         double animalBellySize = animal.getBellySize().get();
         boolean willBellyFitDeadAnimal = deadAnimalWeight + animalCurrentSatiety <= animalBellySize;
         if (deadAnimal.checkAgingPhase(DeadAnimalAging.class) == DeadAnimalAging.NOT_FRESH &&
-                !animal.isIsPoisonProtected()) {
+                !animal.isPoisonProtected()) {
             animal.die();
             deadAnimal.setWeight(deadAnimalWeight - (animalBellySize - animalCurrentSatiety));
         } else {

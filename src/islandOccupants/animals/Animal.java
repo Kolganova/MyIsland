@@ -9,6 +9,8 @@ import interfaces.movable.Movable;
 import island.Location;
 import islandOccupants.IslandOccupant;
 import islandOccupants.OccupantFactory;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ThreadLocalRandom;
@@ -16,6 +18,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static enums.types.OccupantType.DEAD_ANIMAL;
 
+@Getter
+@Setter
 public abstract class Animal extends IslandOccupant implements Movable, Eatable, InitializableAnimal {
     private int maxAmountOfMoves;
     private double satietyCostOnMove;
@@ -103,7 +107,7 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable,
     public void initAnimal(int maxAmountOfOccupants, boolean isPoisonProtected, double weight, double bellySize,
                            int maxAmountOfMoves) {
         setMaxAmountOfOccupants(maxAmountOfOccupants);
-        setIsPoisonProtected(isPoisonProtected);
+        setPoisonProtected(isPoisonProtected);
         setWeight(weight);
         setBellySize(bellySize);
         setCurrentSatiety(ThreadLocalRandom.current().nextDouble(this.getBellySize().get()));
@@ -112,36 +116,8 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable,
         setFemale();
     }
 
-    public boolean isFemale() {
-        return isFemale;
-    }
-
-    public boolean isIsPoisonProtected() {
-        return isPoisonProtected;
-    }
-
-    private void setIsPoisonProtected(boolean isPoisonProtected) {
-        this.isPoisonProtected = isPoisonProtected;
-    }
-
-    private void setMaxAmountOfMoves(int maxAmountOfMoves) {
-        this.maxAmountOfMoves = maxAmountOfMoves;
-    }
-
-    public AtomicReference<Double> getBellySize() {
-        return bellySize;
-    }
-
     protected void setBellySize(Double bellySize) {
         this.bellySize.set(bellySize);
-    }
-
-    protected void setSatietyCostOnMove(double satietyCostOnMove) {
-        this.satietyCostOnMove = satietyCostOnMove;
-    }
-
-    public AtomicReference<Double> getCurrentSatiety() {
-        return currentSatiety;
     }
 
     public void setCurrentSatiety(Double currentSatiety) {
@@ -150,10 +126,6 @@ public abstract class Animal extends IslandOccupant implements Movable, Eatable,
 
     protected void incrementMoveCounter() {
         moveCounter++;
-    }
-
-    public void setMoveCounter(int moveCounter) {
-        this.moveCounter = moveCounter;
     }
 
     protected void setFemale() {

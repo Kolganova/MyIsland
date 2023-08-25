@@ -3,6 +3,8 @@ package island;
 import enums.types.CreationType;
 import enums.types.OccupantType;
 import islandOccupants.IslandOccupant;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -12,6 +14,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static enums.types.OccupantType.DEAD_ANIMAL;
 import static islandOccupants.OccupantFactory.createOccupant;
 
+@Getter
+@Setter
 public class Location {
     private final CopyOnWriteArrayList<IslandOccupant> listOfOccupants = new CopyOnWriteArrayList<>();
     private final ConcurrentHashMap<OccupantType, AtomicInteger> mapWithOccupantsOnLocation = new ConcurrentHashMap<>();
@@ -40,7 +44,6 @@ public class Location {
             if (DEAD_ANIMAL.equals(type))
                 continue;
             IslandOccupant occupant = createOccupant(this, type, CreationType.START_OCCUPANT);
-            // вот эта строчка
             int max = occupant.getMaxAmountOfOccupants() / 2 - 1;
             for (int i = 0; i < max; i++) {
                 createOccupant(this, type, CreationType.START_OCCUPANT);
@@ -59,42 +62,18 @@ public class Location {
         mapWithOccupantsOnLocation.putAll(map);
     }
 
-    public synchronized void incrementAmountOfOccupantsOnLocation(OccupantType type) {
+    public void incrementAmountOfOccupantsOnLocation(OccupantType type) {
         mapWithOccupantsOnLocation.computeIfPresent(type, (key, value) -> {
             value.incrementAndGet();
             return value;
         });
     }
 
-    public synchronized void decrementAmountOfOccupantsOnLocation(OccupantType type) {
+    public void decrementAmountOfOccupantsOnLocation(OccupantType type) {
         mapWithOccupantsOnLocation.computeIfPresent(type, (key, value) -> {
             value.decrementAndGet();
             return value;
         });
-    }
-
-    public ConcurrentHashMap<OccupantType, AtomicInteger> getMapWithOccupantsOnLocation() {
-        return mapWithOccupantsOnLocation;
-    }
-
-    public int getIndexOfInnerList() {
-        return indexOfInnerList;
-    }
-
-    public void setIndexOfInnerList(int indexOfInnerList) {
-        this.indexOfInnerList = indexOfInnerList;
-    }
-
-    public int getIndexOfExternalList() {
-        return indexOfExternalList;
-    }
-
-    public void setIndexOfExternalList(int indexOfExternalList) {
-        this.indexOfExternalList = indexOfExternalList;
-    }
-
-    public CopyOnWriteArrayList<IslandOccupant> getListOfOccupants() {
-        return listOfOccupants;
     }
 
 }

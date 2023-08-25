@@ -3,9 +3,13 @@ package islandOccupants;
 import enums.types.OccupantType;
 import enums.aging.Aging;
 import island.Location;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.Objects;
-
+@Getter
+@Setter
+@EqualsAndHashCode
 public abstract class IslandOccupant {
     private int maxAmountOfOccupants;
     private Double weight;
@@ -29,58 +33,9 @@ public abstract class IslandOccupant {
         return null;
     }
 
-    public int getMaxAmountOfOccupants() {
-        return maxAmountOfOccupants;
-    }
-
-    protected void setMaxAmountOfOccupants(int maxAmountOfEntitiesOnLocation) {
-        this.maxAmountOfOccupants = maxAmountOfEntitiesOnLocation;
-    }
-
-    public Location getLocation() {
-        return location;
-    }
-
-    protected int getAge() {
-        return age;
-    }
-
-    protected void setAge(int age) {
-        this.age = age;
-    }
-
     public synchronized void die() {
         location.decrementAmountOfOccupantsOnLocation(type);
         location.getListOfOccupants().remove(this);
-    }
-
-    public OccupantType getType() {
-        return type;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public Double getWeight() {
-        return weight;
-    }
-
-    public void setWeight(Double weight) {
-        this.weight = weight;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        IslandOccupant occupant = (IslandOccupant) o;
-        return maxAmountOfOccupants == occupant.maxAmountOfOccupants && age == occupant.age && id == occupant.id && weight.equals(occupant.weight) && type.equals(occupant.type) && location.equals(occupant.location);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(maxAmountOfOccupants, weight, type, age, location);
     }
 
     public void incrementAge() {

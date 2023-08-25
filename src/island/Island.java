@@ -1,12 +1,17 @@
 package island;
 
+
+import lombok.Getter;
+
 import java.util.concurrent.*;
 
 public class Island {
     private static Island Island;
+    @Getter
     private final String name;
     private final int width;
     private final int length;
+    @Getter
     private final CopyOnWriteArrayList<CopyOnWriteArrayList<Location>> listOfLocations
             = new CopyOnWriteArrayList<>();
 
@@ -57,14 +62,6 @@ public class Island {
         return completionService;
     }
 
-
-    public CopyOnWriteArrayList<CopyOnWriteArrayList<Location>> getListOfLocations() {
-        return listOfLocations;
-    }
-
-    public String getName() {
-        return name;
-    }
 
     public static Island getIsland() {
         if (Island == null) {
