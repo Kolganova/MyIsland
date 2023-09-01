@@ -1,11 +1,11 @@
 package island;
 
-import interfaces.multipliable.AnimalMultiplication;
-import interfaces.multipliable.PlantMultiplication;
-import islandOccupants.IslandOccupant;
-import islandOccupants.animals.Animal;
-import islandOccupants.deadAnimals.DeadAnimal;
-import islandOccupants.plants.Plant;
+import behavior.multipliable.AnimalMultiplication;
+import behavior.multipliable.PlantMultiplication;
+import model.IslandOccupant;
+import model.animals.Animal;
+import model.deadAnimals.DeadAnimal;
+import model.plants.Plant;
 
 import java.util.ArrayList;
 import java.util.Collections;

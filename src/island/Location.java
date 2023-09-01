@@ -2,7 +2,7 @@ package island;
 
 import enums.types.CreationType;
 import enums.types.OccupantType;
-import islandOccupants.IslandOccupant;
+import model.IslandOccupant;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +12,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static enums.types.OccupantType.DEAD_ANIMAL;
-import static islandOccupants.OccupantFactory.createOccupant;
+import static model.OccupantFactory.createOccupant;
 
 @Getter
 @Setter
